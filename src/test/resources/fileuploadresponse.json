@@ -1,0 +1,51 @@
+{
+    "_embedded": {
+        "documents": [
+            {
+                "size": 72552,
+                "mimeType": "application/pdf",
+                "originalDocumentName": "000LR002.pdf",
+                "createdBy": "15",
+                "lastModifiedBy": "15",
+                "modifiedOn": "2017-10-31T11:48:01.208+0000",
+                "createdOn": "2017-10-31T11:48:01.277+0000",
+                "classification": "PRIVATE",
+                "roles": null,
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8085/documents/ee1636a5-b5c0-4376-bd68-522d1b68658f"
+                    },
+                    "binary": {
+                        "href": "http://localhost:8085/documents/ee1636a5-b5c0-4376-bd68-522d1b68658f/binary"
+                    }
+                },
+                "_embedded": {
+                    "allDocumentVersions": {
+                        "_embedded": {
+                            "documentVersions": [
+                                {
+                                    "size": 72552,
+                                    "mimeType": "application/pdf",
+                                    "originalDocumentName": "000LR002.pdf",
+                                    "createdBy": "15",
+                                    "createdOn": "2017-10-31T11:48:01.277+0000",
+                                    "_links": {
+                                        "document": {
+                                            "href": "http://localhost:8085/documents/ee1636a5-b5c0-4376-bd68-522d1b68658f"
+                                        },
+                                        "self": {
+                                            "href": "http://localhost:8085/documents/ee1636a5-b5c0-4376-bd68-522d1b68658f/versions/ccc9a34a-8471-4fb8-b267-160484945492"
+                                        },
+                                        "binary": {
+                                            "href": "http://localhost:8085/documents/ee1636a5-b5c0-4376-bd68-522d1b68658f/versions/ccc9a34a-8471-4fb8-b267-160484945492/binary"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}
