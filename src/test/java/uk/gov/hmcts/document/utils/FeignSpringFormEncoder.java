@@ -26,14 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/**
- * A custom {@link feign.codec.Encoder} that supports Multipart requests. It uses
- * {@link HttpMessageConverter}s like {@link RestTemplate} does.
- *
- * @author Pierantonio Cangianiello
- */
 public class FeignSpringFormEncoder implements Encoder {
-
 
     private final List<HttpMessageConverter<?>> converters = new RestTemplate().getMessageConverters();
     private final HttpHeaders multipartHeaders = new HttpHeaders();
@@ -166,7 +159,7 @@ public class FeignSpringFormEncoder implements Encoder {
             for (HttpMessageConverter<?> messageConverter : converters) {
                 if (messageConverter.canWrite(requestType, requestContentType)) {
                     ((HttpMessageConverter<Object>) messageConverter).write(
-                        value, requestContentType, dummyRequest);
+                            value, requestContentType, dummyRequest);
                     break;
                 }
             }
