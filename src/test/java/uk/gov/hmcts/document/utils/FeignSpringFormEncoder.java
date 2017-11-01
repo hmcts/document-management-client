@@ -46,9 +46,6 @@ public class FeignSpringFormEncoder implements Encoder {
         jsonHeaders.setContentType(MediaType.APPLICATION_JSON);
     }
 
-    /**
-     * {@inheritDoc }
-     */
     @Override
     public void encode(Object object, Type bodyType, RequestTemplate template) throws EncodeException {
         if (isFormRequest(bodyType)) {
@@ -62,9 +59,9 @@ public class FeignSpringFormEncoder implements Encoder {
      * Encodes the request as a multipart form. It can detect a single {@link MultipartFile}, an
      * array of {@link MultipartFile}s, or POJOs (that are converted to JSON).
      *
-     * @param formMap
-     * @param template
-     * @throws EncodeException
+     * @param formMap  Map of String keys
+     * @param template RequestTemplate
+     * @throws EncodeException throws EncodeException
      */
     private void encodeMultipartFormRequest(Map<String, ?> formMap, RequestTemplate template) throws EncodeException {
         if (formMap == null) {
@@ -88,22 +85,25 @@ public class FeignSpringFormEncoder implements Encoder {
         return object instanceof MultipartFile;
     }
 
-    private boolean isMultipartFileArray(Object o) {
-        return o != null && o.getClass().isArray() && MultipartFile.class.isAssignableFrom(o.getClass().getComponentType());
+    private boolean isMultipartFileArray(Object object) {
+        return object != null
+            && object.getClass().isArray()
+            && MultipartFile.class.isAssignableFrom(object.getClass().getComponentType());
     }
 
     /**
      * Wraps a single {@link MultipartFile} into a {@link HttpEntity} and sets the
-     * {@code Content-type} header to {@code application/octet-stream}
+     * {@code Content-type} header to {@code application/octet-stream}.
      *
-     * @param file
-     * @return
+     * @param file MultipartFile object to be passed
+     * @return HttpEntity
      */
     private HttpEntity<?> encodeMultipartFile(MultipartFile file) {
         HttpHeaders filePartHeaders = new HttpHeaders();
         filePartHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         try {
-            Resource multipartFileResource = new MultipartFileResource(file.getOriginalFilename(), file.getSize(), file.getInputStream());
+            Resource multipartFileResource = new MultipartFileResource(file.getOriginalFilename(),
+                file.getSize(), file.getInputStream());
             return new HttpEntity<>(multipartFileResource, filePartHeaders);
         } catch (IOException ex) {
             throw new EncodeException("Cannot encode request.", ex);
@@ -116,14 +116,16 @@ public class FeignSpringFormEncoder implements Encoder {
      *
      * @param map   current request map.
      * @param name  the name of the array field in the multipart form.
-     * @param files
+     * @param files List of MultipartFile
      */
-    private void encodeMultipartFiles(LinkedMultiValueMap<String, Object> map, String name, List<? extends MultipartFile> files) {
+    private void encodeMultipartFiles(LinkedMultiValueMap<String, Object> map,
+                                      String name, List<? extends MultipartFile> files) {
         HttpHeaders filePartHeaders = new HttpHeaders();
         filePartHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         try {
             for (MultipartFile file : files) {
-                Resource multipartFileResource = new MultipartFileResource(file.getOriginalFilename(), file.getSize(), file.getInputStream());
+                Resource multipartFileResource = new MultipartFileResource(file.getOriginalFilename(),
+                    file.getSize(), file.getInputStream());
                 map.add(name, new HttpEntity<>(multipartFileResource, filePartHeaders));
             }
         } catch (IOException ex) {
@@ -132,16 +134,15 @@ public class FeignSpringFormEncoder implements Encoder {
     }
 
     /**
-     * Wraps an object into a {@link HttpEntity} and sets the {@code Content-type} header to
-     * {@code application/json}
+     * Wraps an object into a {@link HttpEntity} and sets the {@code Content-type} header to {@code application/json}.
      *
-     * @param o
-     * @return
+     * @param object Object type
+     * @return HttpEntity
      */
-    private HttpEntity<?> encodeJsonObject(Object o) {
+    private HttpEntity<?> encodeJsonObject(Object object) {
         HttpHeaders jsonPartHeaders = new HttpHeaders();
         jsonPartHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(o, jsonPartHeaders);
+        return new HttpEntity<>(object, jsonPartHeaders);
     }
 
     /**
@@ -149,12 +150,14 @@ public class FeignSpringFormEncoder implements Encoder {
      * {@link org.springframework.web.client.RestTemplate}, filling the body of the request
      * template.
      *
-     * @param value
-     * @param requestHeaders
-     * @param template
-     * @throws EncodeException
+     * @param value          Value of type Object
+     * @param requestHeaders HttpHeaders to be used
+     * @param template       RequestTemplate
+     * @throws EncodeException throws EncodeException
      */
-    private void encodeRequest(Object value, HttpHeaders requestHeaders, RequestTemplate template) throws EncodeException {
+    private void encodeRequest(Object value, HttpHeaders requestHeaders,
+                               RequestTemplate template) throws EncodeException {
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         HttpOutputMessage dummyRequest = new HttpOutputMessageImpl(outputStream, requestHeaders);
         try {
@@ -210,13 +213,6 @@ public class FeignSpringFormEncoder implements Encoder {
 
     }
 
-    /**
-     * Heuristic check for multipart requests.
-     *
-     * @param type
-     * @return
-     * @see feign.Types#MAP_STRING_WILDCARD
-     */
     static boolean isFormRequest(Type type) {
         return MAP_STRING_WILDCARD.equals(type);
     }
