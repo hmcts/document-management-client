@@ -8,36 +8,36 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Document {
 
-    String classification;
+    public String classification;
 
-    long size;
+    public long size;
 
-    String mimeType;
+    public String mimeType;
 
-    String originalDocumentName;
+    public String originalDocumentName;
 
-    String createdBy;
+    public String createdBy;
 
     String lastModifiedBy;
 
-    Date modifiedOn;
+    public Date modifiedOn;
 
-    Date createdOn;
+    public Date createdOn;
 
     @JsonProperty("_links")
-    Links links;
+    public Links links;
 
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    static class Links {
+    public static class Links {
 
-        Link self;
-        Link binary;
+        public Link self;
+        public Link binary;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    static class Link {
-        String href;
+    public static class Link {
+        public String href;
     }
 
 }
