@@ -13,6 +13,9 @@ buildscript {
 apply plugin: 'checkstyle'
 apply plugin: 'java-library'
 apply plugin: 'org.springframework.boot'
+apply 'maven'
+apply 'maven-publish'
+apply "com.jfrog.bintray" version "1.7.3"
 
 group 'uk.gov.hmcts.reform.cmc'
 version '1.0.0'
@@ -47,6 +50,75 @@ jar {
 task printVersion {
   doLast {
     print project.version
+  }
+}
+
+
+def pomConfig = {
+  licenses {
+    license {
+      name "MIT License"
+      url "http://www.opensource.org/licenses/mit-license.php"
+      distribution "repo"
+    }
+  }
+
+  scm {
+    url "https://github.com/hmcts/document-management-client"
+  }
+}
+
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}
+
+publishing {
+  publications {
+    Main(MavenPublication) {
+      from components.java
+      artifact sourcesJar
+      artifact javadocJar
+      groupId project.group
+      artifactId 'document-management-client'
+      version project.version
+
+      pom.withXml {
+        def root = asNode()
+        root.appendNode('description', 'Client library for communicating with document management gateway')
+        root.appendNode('name', 'CMC document management client')
+        root.appendNode('url', 'https://github.com/hmcts/document-management-client')
+        root.children().last() + pomConfig
+      }
+    }
+  }
+}
+
+bintray {
+  user = System.getenv('BINTRAY_USER')
+  key = System.getenv('BINTRAY_KEY')
+  publications = ['Main']
+  publish = true
+  pkg {
+    repo = 'hmcts-maven'
+    name = 'document-management-client'
+    userOrg = 'hmcts'
+    licenses = ['MIT']
+    vcsUrl = 'https://github.com/hmcts/document-management-client'
+    version {
+      name = project.version
+    }
   }
 }
 
