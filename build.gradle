@@ -13,9 +13,8 @@ buildscript {
 apply plugin: 'checkstyle'
 apply plugin: 'java-library'
 apply plugin: 'org.springframework.boot'
-apply 'maven'
-apply 'maven-publish'
-apply "com.jfrog.bintray" version "1.7.3"
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 group 'uk.gov.hmcts.reform.cmc'
 version '1.0.0'
@@ -104,23 +103,23 @@ publishing {
     }
   }
 }
-
-bintray {
-  user = System.getenv('BINTRAY_USER')
-  key = System.getenv('BINTRAY_KEY')
-  publications = ['Main']
-  publish = true
-  pkg {
-    repo = 'hmcts-maven'
-    name = 'document-management-client'
-    userOrg = 'hmcts'
-    licenses = ['MIT']
-    vcsUrl = 'https://github.com/hmcts/document-management-client'
-    version {
-      name = project.version
-    }
-  }
-}
+//
+//bintray {
+//  user = System.getenv('BINTRAY_USER')
+//  key = System.getenv('BINTRAY_KEY')
+//  publications = ['Main']
+//  publish = true
+//  pkg {
+//    repo = 'hmcts-maven'
+//    name = 'document-management-client'
+//    userOrg = 'hmcts'
+//    licenses = ['MIT']
+//    vcsUrl = 'https://github.com/hmcts/document-management-client'
+//    version {
+//      name = project.version
+//    }
+//  }
+//}
 
 ext {
   springCloudVersion = 'Dalston.SR4'
