@@ -1,54 +1,70 @@
 buildscript {
-    ext {
-        springBootVersion = '1.5.8.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+  ext {
+    springBootVersion = '1.5.8.RELEASE'
+  }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
 }
 
+apply plugin: 'checkstyle'
 apply plugin: 'java-library'
 apply plugin: 'org.springframework.boot'
 
-group = 'uk.gov.hmcts.cmc'
-version = '0.0.1'
+group 'uk.gov.hmcts.reform.cmc'
+version '1.0.0'
+
+checkstyle.toolVersion = '7.2'
+checkstyle.configFile = new File(rootDir, "checkstyle.xml")
 
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 
+jar {
+  manifest {
+    attributes 'Implementation-Title': project.name, 'Implementation-Version': project.version
+  }
+}
+
+task printVersion {
+  doLast {
+    print project.version
+  }
+}
+
 ext {
-    springCloudVersion = 'Dalston.SR4'
+  springCloudVersion = 'Dalston.SR4'
 }
 
 dependencies {
-    compile('org.springframework.cloud:spring-cloud-starter-feign')
+  compile('org.springframework.cloud:spring-cloud-starter-feign')
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('org.testcontainers:testcontainers:1.4.3')
-    testCompile('com.github.tomakehurst:wiremock:2.10.1')
-    testCompile('org.eclipse.jetty:jetty-server')
-    testCompile('org.eclipse.jetty:jetty-servlet')
-    testCompile('org.eclipse.jetty:jetty-servlets')
-    testCompile('org.apache.httpcomponents:httpclient')
-    compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
-    compile group: 'io.github.openfeign.form', name: 'feign-form-spring', version: '2.0.5'
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
+  testCompile('org.springframework.boot:spring-boot-starter-test')
+  testCompile('org.testcontainers:testcontainers:1.4.3')
+  testCompile('com.github.tomakehurst:wiremock:2.10.1')
+  testCompile('org.eclipse.jetty:jetty-server')
+  testCompile('org.eclipse.jetty:jetty-servlet')
+  testCompile('org.eclipse.jetty:jetty-servlets')
+  testCompile('org.apache.httpcomponents:httpclient')
+  compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
+  compile group: 'io.github.openfeign.form', name: 'feign-form-spring', version: '2.0.5'
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
 
 }
 
 dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
 }
 
 bootRepackage {
-    enabled = false;
+  enabled = false;
 }
