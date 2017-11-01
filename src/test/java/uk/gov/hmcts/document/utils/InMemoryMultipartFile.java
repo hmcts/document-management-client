@@ -9,9 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * @author Pierantonio Cangianiello
- */
 public class InMemoryMultipartFile implements MultipartFile {
 
     private final String name;

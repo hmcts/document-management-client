@@ -6,6 +6,7 @@ import feign.jackson.JacksonDecoder;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.springframework.web.multipart.MultipartFile;
+import uk.gov.hmcts.document.domain.Document;
 import uk.gov.hmcts.document.domain.UploadResponse;
 import uk.gov.hmcts.document.utils.FeignSpringFormEncoder;
 import uk.gov.hmcts.document.utils.InMemoryMultipartFile;
@@ -31,21 +32,28 @@ public class DocumentClientApiTest {
                         .withBody(new ResourceReader().read("/fileuploadresponse.json"))));
 
 
-        final MultipartFile file = new InMemoryMultipartFile("filename.tmp", new byte[]{65, 66, 67, 68});
+        final MultipartFile file = new InMemoryMultipartFile("000LR002.pdf", new byte[]{65, 66, 67, 68});
 
         final MultipartFile file2
-                = new InMemoryMultipartFile("filename2.tmp", new byte[]{69, 70, 71, 72, 73, 68});
+                = new InMemoryMultipartFile("000LR050.pdf", new byte[]{69, 70, 71, 72, 73, 68});
 
         final UploadResponse response = Feign.builder()
                 .encoder(new FeignSpringFormEncoder())
                 .decoder(new JacksonDecoder())
-                .target(DocumentClientApi.class,
-                        "http://localhost:8083")
+                .target(DocumentClientApi.class, "http://localhost:8083")
                 .upload("token here", new MultipartFile[]{file, file2});
 
-        assertThat(response.embedded.documents.get(0).links.self.href)
-                .isEqualTo("http://localhost:8085/documents/ee1636a5-b5c0-4376-bd68-522d1b68658f");
+        final Document firstDocument = response.embedded.documents.get(0);
+        assertThat(firstDocument.originalDocumentName).isEqualTo("000LR002.pdf");
 
+        assertThat(firstDocument.links.self.href)
+                .isEqualTo("http://localhost:8085/documents/85d97996-22a5-40d7-882e-3a382c8ae1b4");
+
+        final Document secondDocument = response.embedded.documents.get(1);
+        assertThat(secondDocument.originalDocumentName).isEqualTo("000LR050.pdf");
+
+        assertThat(secondDocument.links.self.href)
+                .isEqualTo("http://localhost:8085/documents/5cc80e35-cdb8-4933-967e-54cef53d4a57");
     }
 
 }

@@ -26,14 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/**
- * A custom {@link feign.codec.Encoder} that supports Multipart requests. It uses
- * {@link HttpMessageConverter}s like {@link RestTemplate} does.
- *
- * @author Pierantonio Cangianiello
- */
 public class FeignSpringFormEncoder implements Encoder {
-
 
     private final List<HttpMessageConverter<?>> converters = new RestTemplate().getMessageConverters();
     private final HttpHeaders multipartHeaders = new HttpHeaders();
@@ -114,7 +107,7 @@ public class FeignSpringFormEncoder implements Encoder {
      * Fills the request map with {@link HttpEntity}s containing the given {@link MultipartFile}s.
      * Sets the {@code Content-type} header to {@code application/octet-stream} for each file.
      *
-     * @param the   current request map.
+     * @param map   current request map.
      * @param name  the name of the array field in the multipart form.
      * @param files
      */
