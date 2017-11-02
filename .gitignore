@@ -209,4 +209,3 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 # End of https://www.gitignore.io/api/java,macos,gradle,eclipse,windows,intellij+all
-/cmc-document-management-client.iml
