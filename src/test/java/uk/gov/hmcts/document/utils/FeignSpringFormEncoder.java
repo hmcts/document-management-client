@@ -47,14 +47,6 @@ public class FeignSpringFormEncoder implements Encoder {
         }
     }
 
-    /**
-     * Encodes the request as a multipart form. It can detect a single {@link MultipartFile}, an
-     * array of {@link MultipartFile}s, or POJOs (that are converted to JSON).
-     *
-     * @param formMap  Map of String keys
-     * @param template RequestTemplate
-     * @throws EncodeException throws EncodeException
-     */
     private void encodeMultipartFormRequest(Map<String, ?> formMap, RequestTemplate template) throws EncodeException {
         if (formMap == null) {
             throw new EncodeException("Cannot encode request with null form.");
@@ -83,13 +75,6 @@ public class FeignSpringFormEncoder implements Encoder {
             && MultipartFile.class.isAssignableFrom(object.getClass().getComponentType());
     }
 
-    /**
-     * Wraps a single {@link MultipartFile} into a {@link HttpEntity} and sets the
-     * {@code Content-type} header to {@code application/octet-stream}.
-     *
-     * @param file MultipartFile object to be passed
-     * @return HttpEntity
-     */
     private HttpEntity<?> encodeMultipartFile(MultipartFile file) {
         HttpHeaders filePartHeaders = new HttpHeaders();
         filePartHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -102,14 +87,6 @@ public class FeignSpringFormEncoder implements Encoder {
         }
     }
 
-    /**
-     * Fills the request map with {@link HttpEntity}s containing the given {@link MultipartFile}s.
-     * Sets the {@code Content-type} header to {@code application/octet-stream} for each file.
-     *
-     * @param map   current request map.
-     * @param name  the name of the array field in the multipart form.
-     * @param files List of MultipartFile
-     */
     private void encodeMultipartFiles(LinkedMultiValueMap<String, Object> map,
                                       String name, List<? extends MultipartFile> files) {
         HttpHeaders filePartHeaders = new HttpHeaders();
@@ -125,28 +102,12 @@ public class FeignSpringFormEncoder implements Encoder {
         }
     }
 
-    /**
-     * Wraps an object into a {@link HttpEntity} and sets the {@code Content-type} header to {@code application/json}.
-     *
-     * @param object Object type
-     * @return HttpEntity
-     */
     private HttpEntity<?> encodeJsonObject(Object object) {
         HttpHeaders jsonPartHeaders = new HttpHeaders();
         jsonPartHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new HttpEntity<>(object, jsonPartHeaders);
     }
 
-    /**
-     * Calls the conversion chain actually used by
-     * {@link org.springframework.web.client.RestTemplate}, filling the body of the request
-     * template.
-     *
-     * @param value          Value of type Object
-     * @param requestHeaders HttpHeaders to be used
-     * @param template       RequestTemplate
-     * @throws EncodeException throws EncodeException
-     */
     private void encodeRequest(Object value, HttpHeaders requestHeaders,
                                RequestTemplate template) throws EncodeException {
 
@@ -171,18 +132,10 @@ public class FeignSpringFormEncoder implements Encoder {
                 template.header(entry.getKey(), entry.getValue());
             }
         }
-        /*
-        we should use a template output stream... this will cause issues if files are too big,
-        since the whole request will be in memory.
-         */
+
         template.body(outputStream.toByteArray(), UTF_8);
     }
 
-    /**
-     * Minimal implementation of {@link org.springframework.http.HttpOutputMessage}. It's needed to
-     * provide the request body output stream to
-     * {@link org.springframework.http.converter.HttpMessageConverter}s
-     */
     private class HttpOutputMessageImpl implements HttpOutputMessage {
 
         private final OutputStream body;
@@ -209,9 +162,6 @@ public class FeignSpringFormEncoder implements Encoder {
         return MAP_STRING_WILDCARD.equals(type);
     }
 
-    /**
-     * Dummy resource class. Wraps file content and its original name.
-     */
     static class MultipartFileResource extends InputStreamResource {
 
         private final String filename;
@@ -230,7 +180,7 @@ public class FeignSpringFormEncoder implements Encoder {
 
         @Override
         public InputStream getInputStream() throws IOException, IllegalStateException {
-            return super.getInputStream(); //To change body of generated methods, choose Tools | Templates.
+            return super.getInputStream();
         }
 
         @Override
