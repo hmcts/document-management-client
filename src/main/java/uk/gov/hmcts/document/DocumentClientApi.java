@@ -11,10 +11,10 @@ import uk.gov.hmcts.document.domain.UploadResponse;
 public interface DocumentClientApi {
 
     @RequestLine("POST /documents")
-    @Headers( {"Content-Type: multipart/form-data",
+    @Headers({"Content-Type: multipart/form-data",
         "Authorization: {token}",
         "accept: application/vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json;charset=UTF-8"
-        })
+    })
     UploadResponse upload(@Param("token") String token,
                           @Param("files") MultipartFile[] files);
 

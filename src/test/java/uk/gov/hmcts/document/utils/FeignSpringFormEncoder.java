@@ -1,6 +1,5 @@
 package uk.gov.hmcts.document.utils;
 
-
 import feign.RequestTemplate;
 import feign.codec.EncodeException;
 import feign.codec.Encoder;
@@ -159,7 +158,7 @@ public class FeignSpringFormEncoder implements Encoder {
             for (HttpMessageConverter<?> messageConverter : converters) {
                 if (messageConverter.canWrite(requestType, requestContentType)) {
                     ((HttpMessageConverter<Object>) messageConverter).write(
-                            value, requestContentType, dummyRequest);
+                        value, requestContentType, dummyRequest);
                     break;
                 }
             }

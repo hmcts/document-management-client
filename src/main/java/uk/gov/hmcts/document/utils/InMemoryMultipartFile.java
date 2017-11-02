@@ -1,6 +1,5 @@
 package uk.gov.hmcts.document.utils;
 
-
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
