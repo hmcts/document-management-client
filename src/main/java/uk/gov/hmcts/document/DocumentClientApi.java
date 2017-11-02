@@ -17,6 +17,7 @@ public interface DocumentClientApi {
             "accept: application/vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json;charset=UTF-8"
         })
     UploadResponse upload(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
-                          @RequestParam("files") MultipartFile[] files);
+                          @RequestParam("files") MultipartFile[] files,
+                          @RequestParam("classification") String classification);
 
 }
