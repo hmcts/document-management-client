@@ -1,15 +1,16 @@
 buildscript {
-  ext {
-    springBootVersion = '1.5.8.RELEASE'
-  }
   repositories {
-    mavenCentral()
     jcenter()
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
   }
+}
+
+plugins {
+  id 'checkstyle'
+  id 'io.spring.dependency-management' version '1.0.3.RELEASE'
+  id 'org.springframework.boot' version '1.5.8.RELEASE'
 }
 
 apply plugin: 'checkstyle'
@@ -22,27 +23,30 @@ apply plugin: 'com.jfrog.bintray'
 group 'uk.gov.hmcts.reform.cmc'
 version '1.0.0'
 
-checkstyle.toolVersion = '7.2'
-checkstyle.configFile = new File(rootDir, "checkstyle.xml")
-
-tasks.withType(Checkstyle).each { checkstyleTask ->
-  checkstyleTask.doLast {
-    reports.all { report ->
-      def outputFile = report.destination
-      if (outputFile.exists() && outputFile.text.contains("<error ")) {
-        throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
-      }
-    }
-  }
+checkstyle {
+  maxWarnings = 0
+  toolVersion = '8.3'
+  // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
+  configDir = new File(rootDir, 'config/checkstyle')
 }
 
 sourceCompatibility = 1.8
 
-repositories {
-  mavenCentral()
-  jcenter()
+compileJava {
+  options.compilerArgs << '-parameters' << '-Xlint:deprecation'
 }
 
+compileTestJava {
+  options.compilerArgs << '-Xlint:deprecation'
+}
+
+repositories {
+  maven {
+    url  "https://dl.bintray.com/hmcts/hmcts-maven"
+  }
+  jcenter()
+  mavenLocal()
+}
 
 jar {
   manifest {
@@ -100,7 +104,7 @@ publishing {
       pom.withXml {
         def root = asNode()
         root.appendNode('description', 'Client library for communicating with document management gateway')
-        root.appendNode('name', 'CMC document management client')
+        root.appendNode('name', 'Document management client')
         root.appendNode('url', 'https://github.com/hmcts/document-management-client')
         root.children().last() + pomConfig
       }
