@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.document.domain.UploadResponse;
 
-@FeignClient(name = "document.management.gateway.api", url = "${document.management.gateway.api.url}")
+@FeignClient(name = "document-management-gateway-api", url = "${document.management.gateway.api.url}")
 public interface DocumentClientApi {
 
     @RequestMapping(method = RequestMethod.POST, value = "/documents",
