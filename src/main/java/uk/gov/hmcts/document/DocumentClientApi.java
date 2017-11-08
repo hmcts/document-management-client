@@ -1,8 +1,6 @@
 package uk.gov.hmcts.document;
 
-import feign.codec.Decoder;
 import feign.codec.Encoder;
-import feign.jackson.JacksonDecoder;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
