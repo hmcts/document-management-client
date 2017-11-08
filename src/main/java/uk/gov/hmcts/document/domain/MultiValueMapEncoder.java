@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +35,7 @@ public class MultiValueMapEncoder extends SpringFormEncoder {
         }
 
         MultiValueMap<String, Object> map = (MultiValueMap<String, Object>) object;
+        Map<String, Object> data = new HashMap<>();
         for (Map.Entry<String, List<Object>> entry : map.entrySet()) {
 
             if (entry.getKey().equals("files")) {
@@ -46,9 +47,12 @@ public class MultiValueMapEncoder extends SpringFormEncoder {
                     e.printStackTrace();
                 }
 
-                Map<String, Object> data = Collections.singletonMap(multipartFile.getName(), file);
-                new SpringMultipartEncodedDataProcessor().process(data, template);
+                data.put(multipartFile.getName(), file);
+            } else {
+                data.put(entry.getKey(), entry.getValue().get(0));
+
             }
         }
+        new SpringMultipartEncodedDataProcessor().process(data, template);
     }
 }
