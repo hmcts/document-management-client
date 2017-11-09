@@ -23,7 +23,7 @@ import uk.gov.hmcts.document.domain.UploadResponse;
     configuration = DocumentClientApi.MultiPartSupportConfig.class)
 public interface DocumentClientApi {
 
-    @RequestMapping(method = RequestMethod.POST, value = "/documents", consumes = "multipart/form-data",
+    @RequestMapping(method = RequestMethod.POST, value = "/documents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
         headers = {"Content-Type=" + MediaType.MULTIPART_FORM_DATA_VALUE,
             "accept=application/vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json;charset=utf-8"
         })

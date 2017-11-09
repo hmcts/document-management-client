@@ -6,6 +6,8 @@ import feign.codec.Encoder;
 import feign.form.spring.SpringFormEncoder;
 import feign.form.spring.SpringMultipartEncodedDataProcessor;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 public class MultiValueMapEncoder extends SpringFormEncoder {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MultiValueMapEncoder.class);
+
     private final Encoder delegate;
 
     public MultiValueMapEncoder() {
@@ -43,8 +48,8 @@ public class MultiValueMapEncoder extends SpringFormEncoder {
                 final File file = new File(multipartFile.getOriginalFilename());
                 try {
                     FileUtils.writeByteArrayToFile(file, multipartFile.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException exception) {
+                    LOGGER.error("ERROR: ", exception);
                 }
 
                 data.put(multipartFile.getName(), file);
