@@ -9,11 +9,19 @@ import java.util.List;
 public class UploadResponse {
 
     @JsonProperty("_embedded")
-    public Embedded embedded;
+    private Embedded embedded;
+
+    public Embedded getEmbedded() {
+        return embedded;
+    }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Embedded {
-        public List<Document> documents;
+        private List<Document> documents;
+
+        public List<Document> getDocuments() {
+            return documents;
+        }
     }
 
 }

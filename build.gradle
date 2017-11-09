@@ -143,10 +143,11 @@ dependencies {
   testCompile('org.eclipse.jetty:jetty-servlet')
   testCompile('org.eclipse.jetty:jetty-servlets')
   testCompile('org.apache.httpcomponents:httpclient')
+  testCompile('org.assertj:assertj-core:3.8.0')
   compile group: 'commons-io', name: 'commons-io', version: '2.5'
+  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.24.0.RELEASE'
   compile('com.netflix.feign:feign-jackson:8.18.0')
   compile('io.github.openfeign.form:feign-form-spring:2.0.5')
-  testCompile('org.assertj:assertj-core:3.8.0')
 
 }
 
