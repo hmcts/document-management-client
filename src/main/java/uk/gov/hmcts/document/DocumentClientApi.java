@@ -1,5 +1,6 @@
 package uk.gov.hmcts.document;
 
+import feign.Logger;
 import feign.codec.Encoder;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.context.annotation.Bean;
@@ -24,10 +25,10 @@ public interface DocumentClientApi {
 
     @RequestMapping(method = RequestMethod.POST, value = "/documents", consumes = "multipart/form-data",
         headers = {"Content-Type=" + MediaType.MULTIPART_FORM_DATA_VALUE,
-            "accept=application/vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json;charset=utf-8",
-            "classification=PRIVATE"
+            "accept=application/vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json;charset=utf-8"
         })
     UploadResponse upload(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+                          @RequestHeader("classification") String classification,
                           @RequestPart MultiValueMap parameters);
 
     @RequestMapping(method = RequestMethod.GET, value = "{uri}")
@@ -45,7 +46,7 @@ public interface DocumentClientApi {
 
         @Bean
         public feign.Logger.Level multipartLoggerLevel() {
-            return feign.Logger.Level.FULL;
+            return Logger.Level.BASIC;
         }
     }
 }
