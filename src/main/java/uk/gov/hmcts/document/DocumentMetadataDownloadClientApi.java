@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import uk.gov.hmcts.document.domain.Document;
 
-@FeignClient(name = "document-management-download-metadata-gateway-api", url = "${document_management.api_gateway.url}",
-    configuration = DocumentDownloadMetadataApi.DownloadConfiguration.class)
-public interface DocumentDownloadMetadataApi {
+@FeignClient(name = "document-management-metadata-download-gateway-api", url = "${document_management.api_gateway.url}",
+    configuration = DocumentMetadataDownloadClientApi.DownloadConfiguration.class)
+public interface DocumentMetadataDownloadClientApi {
 
     @RequestMapping(method = RequestMethod.GET, value = "{document_metadata_uri}")
     Document getDocumentMetadata(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,

@@ -42,7 +42,7 @@ compileTestJava {
 
 repositories {
   maven {
-    url  "https://dl.bintray.com/hmcts/hmcts-maven"
+    url "https://dl.bintray.com/hmcts/hmcts-maven"
   }
   jcenter()
   mavenLocal()
@@ -135,20 +135,8 @@ ext {
 
 dependencies {
   compile('org.springframework.cloud:spring-cloud-starter-feign')
-
-  testCompile('org.springframework.boot:spring-boot-starter-test')
-  testCompile('org.testcontainers:testcontainers:1.4.3')
-  testCompile('com.github.tomakehurst:wiremock:2.10.1')
-  testCompile('org.eclipse.jetty:jetty-server')
-  testCompile('org.eclipse.jetty:jetty-servlet')
-  testCompile('org.eclipse.jetty:jetty-servlets')
-  testCompile('org.apache.httpcomponents:httpclient')
-  testCompile('org.assertj:assertj-core:3.8.0')
-  compile group: 'commons-io', name: 'commons-io', version: '2.5'
   compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.24.0.RELEASE'
   compile('com.netflix.feign:feign-jackson:8.18.0')
-  compile('io.github.openfeign.form:feign-form-spring:2.0.5')
-
 }
 
 dependencyManagement {

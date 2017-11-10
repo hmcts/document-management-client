@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import uk.gov.hmcts.document.domain.Classification;
 import uk.gov.hmcts.document.domain.UploadResponse;
 
 import java.io.IOException;
@@ -25,6 +26,12 @@ import java.util.List;
 @Service
 public class DocumentUploadClientApi {
 
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String MULTIPART_FORM_DATA = "multipart/form-data";
+    private static final String CLASSIFICATION = "classification";
+    private static final String FILES = "files";
+    private static final String DOCUMENTS_PATH = "/documents";
     private final String dmUri;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -54,17 +61,17 @@ public class DocumentUploadClientApi {
             HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(parameters,
                 httpHeaders);
 
-            final String t = restTemplate.postForObject(dmUri + "/documents", httpEntity, String.class);
+            final String t = restTemplate.postForObject(dmUri + DOCUMENTS_PATH, httpEntity, String.class);
             return objectMapper.readValue(t, UploadResponse.class);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    public HttpHeaders setHttpHeaders(String authorizationToken) {
+    private HttpHeaders setHttpHeaders(String authorizationToken) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", authorizationToken);
-        headers.set("Content-Type", "multipart/form-data");
+        headers.add(AUTHORIZATION, authorizationToken);
+        headers.set(CONTENT_TYPE, MULTIPART_FORM_DATA);
         return headers;
     }
 
@@ -72,8 +79,8 @@ public class DocumentUploadClientApi {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         files.stream()
             .map(DocumentUploadClientApi::buildPartFromFile)
-            .forEach(file -> parameters.add("files", file));
-        parameters.add("classification", "RESTRICTED");
+            .forEach(file -> parameters.add(FILES, file));
+        parameters.add(CLASSIFICATION, Classification.RESTRICTED.name());
         return parameters;
     }
 
@@ -99,6 +106,4 @@ public class DocumentUploadClientApi {
             throw new IllegalStateException(ioException);
         }
     }
-
-
 }
