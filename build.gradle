@@ -21,7 +21,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
 group 'uk.gov.hmcts.reform'
-version '1.0.0'
+version '1.0.1'
 
 checkstyle {
   maxWarnings = 0
@@ -42,7 +42,7 @@ compileTestJava {
 
 repositories {
   maven {
-    url  "https://dl.bintray.com/hmcts/hmcts-maven"
+    url "https://dl.bintray.com/hmcts/hmcts-maven"
   }
   jcenter()
   mavenLocal()
@@ -135,18 +135,7 @@ ext {
 
 dependencies {
   compile('org.springframework.cloud:spring-cloud-starter-feign')
-
-  testCompile('org.springframework.boot:spring-boot-starter-test')
-  testCompile('org.testcontainers:testcontainers:1.4.3')
-  testCompile('com.github.tomakehurst:wiremock:2.10.1')
-  testCompile('org.eclipse.jetty:jetty-server')
-  testCompile('org.eclipse.jetty:jetty-servlet')
-  testCompile('org.eclipse.jetty:jetty-servlets')
-  testCompile('org.apache.httpcomponents:httpclient')
   compile('com.netflix.feign:feign-jackson:8.18.0')
-  compile('io.github.openfeign.form:feign-form-spring:2.0.5')
-  testCompile('org.assertj:assertj-core:3.8.0')
-
 }
 
 dependencyManagement {

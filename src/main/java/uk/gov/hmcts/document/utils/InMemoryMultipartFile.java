@@ -1,5 +1,6 @@
 package uk.gov.hmcts.document.utils;
 
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -7,6 +8,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class InMemoryMultipartFile implements MultipartFile {
 
@@ -14,6 +17,13 @@ public class InMemoryMultipartFile implements MultipartFile {
     private final String originalFileName;
     private final String contentType;
     private final byte[] payload;
+
+    public InMemoryMultipartFile(File file) throws IOException {
+        this.originalFileName = file.getName();
+        this.payload = FileCopyUtils.copyToByteArray(file);
+        this.name = "file";
+        this.contentType = "application/octet-stream";
+    }
 
     public InMemoryMultipartFile(String originalFileName, byte[] payload) {
         this.originalFileName = originalFileName;
@@ -72,4 +82,23 @@ public class InMemoryMultipartFile implements MultipartFile {
         new FileOutputStream(dest).write(payload);
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final InMemoryMultipartFile that = (InMemoryMultipartFile) o;
+        return Objects.equals(name, that.name)
+            && Objects.equals(originalFileName, that.originalFileName)
+            && Objects.equals(contentType, that.contentType)
+            && Arrays.equals(payload, that.payload);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, originalFileName, contentType, payload);
+    }
 }
