@@ -135,7 +135,6 @@ ext {
 
 dependencies {
   compile('org.springframework.cloud:spring-cloud-starter-feign')
-  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.24.0.RELEASE'
   compile('com.netflix.feign:feign-jackson:8.18.0')
 }
 

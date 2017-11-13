@@ -29,5 +29,4 @@ public interface DocumentMetadataDownloadClientApi {
             return new JacksonDecoder();
         }
     }
-
 }
