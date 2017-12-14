@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import uk.gov.hmcts.reform.document.healthcheck.InternalHealth;
-
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @FeignClient(name = "document-management-download-gateway-api", url = "${document_management.api_gateway.url}")
 public interface DocumentDownloadClientApi {
