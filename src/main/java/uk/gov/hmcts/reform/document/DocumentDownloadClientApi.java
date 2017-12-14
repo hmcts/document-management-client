@@ -1,4 +1,4 @@
-package uk.gov.hmcts.document;
+package uk.gov.hmcts.reform.document;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.core.io.Resource;
@@ -15,5 +15,4 @@ public interface DocumentDownloadClientApi {
     @RequestMapping(method = RequestMethod.GET, value = "{document_download_uri}")
     ResponseEntity<Resource> downloadBinary(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
                                             @PathVariable("document_download_uri") String documentDownloadUri);
-
 }

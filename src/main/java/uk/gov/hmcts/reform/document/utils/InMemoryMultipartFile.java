@@ -1,4 +1,4 @@
-package uk.gov.hmcts.document.utils;
+package uk.gov.hmcts.reform.document.utils;
 
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
