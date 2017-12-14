@@ -1,4 +1,4 @@
-package uk.gov.hmcts.document;
+package uk.gov.hmcts.hmcts.document;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import uk.gov.hmcts.document.domain.Classification;
-import uk.gov.hmcts.document.domain.UploadResponse;
+import uk.gov.hmcts.hmcts.document.domain.Classification;
+import uk.gov.hmcts.hmcts.document.domain.UploadResponse;
 
 import java.io.IOException;
 import java.util.List;
