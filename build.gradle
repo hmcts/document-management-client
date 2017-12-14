@@ -135,8 +135,8 @@ ext {
 
 dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  compile('org.springframework.cloud:spring-cloud-starter-feign')
-  compile('com.netflix.feign:feign-jackson:8.18.0')
+  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign'
+  compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
 }
 
 dependencyManagement {

@@ -19,12 +19,4 @@ public interface DocumentDownloadClientApi {
     @RequestMapping(method = RequestMethod.GET, value = "{document_download_uri}")
     ResponseEntity<Resource> downloadBinary(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
                                             @PathVariable("document_download_uri") String documentDownloadUri);
-
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/health",
-        headers = CONTENT_TYPE + "=" + APPLICATION_JSON_UTF8_VALUE
-    )
-    InternalHealth health();
-
 }

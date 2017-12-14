@@ -6,30 +6,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.document.DocumentDownloadClientApi;
+import uk.gov.hmcts.reform.document.DocumentMetadataDownloadClientApi;
 
 @Component
 public class DocumentManagementHealthIndicator implements HealthIndicator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentManagementHealthIndicator.class);
 
-    private final DocumentDownloadClientApi documentDownloadClientApi;
+    private final DocumentMetadataDownloadClientApi documentMetadataDownloadClientApi;
 
     @Autowired
-    public DocumentManagementHealthIndicator(final DocumentDownloadClientApi documentDownloadClientApi) {
-        this.documentDownloadClientApi = documentDownloadClientApi;
+    public DocumentManagementHealthIndicator(
+        final DocumentMetadataDownloadClientApi documentMetadataDownloadClientApi) {
+        this.documentMetadataDownloadClientApi = documentMetadataDownloadClientApi;
     }
 
     @Override
     public Health health() {
         try {
-            InternalHealth internalHealth = this.documentDownloadClientApi.health();
-            return new Health.Builder(internalHealth.getStatus(), internalHealth.getDetails())
-                .build();
+            InternalHealth internalHealth = this.documentMetadataDownloadClientApi.health();
+            return new Health.Builder(internalHealth.getStatus()).build();
         } catch (Exception ex) {
-            LOGGER.error("Error on core case data store app healthcheck", ex);
-            return Health.down(ex)
-                .build();
+            LOGGER.error("Error on document management app healthcheck", ex);
+            return Health.down(ex).build();
         }
     }
 }
