@@ -1,4 +1,4 @@
-package uk.gov.hmcts.hmcts.document.healthcheck;
+package uk.gov.hmcts.reform.document.healthcheck;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.hmcts.document.DocumentDownloadClientApi;
+import uk.gov.hmcts.reform.document.DocumentDownloadClientApi;
 
 @Component
 public class DocumentManagementHealthIndicator implements HealthIndicator {

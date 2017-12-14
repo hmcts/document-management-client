@@ -1,4 +1,4 @@
-package uk.gov.hmcts.hmcts.document.healthcheck;
+package uk.gov.hmcts.reform.document.healthcheck;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

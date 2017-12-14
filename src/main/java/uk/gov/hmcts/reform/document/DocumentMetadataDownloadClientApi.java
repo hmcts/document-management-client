@@ -1,4 +1,4 @@
-package uk.gov.hmcts.hmcts.document;
+package uk.gov.hmcts.reform.document;
 
 import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import uk.gov.hmcts.hmcts.document.domain.Document;
+import uk.gov.hmcts.reform.document.domain.Document;
 
 @FeignClient(name = "document-management-metadata-download-gateway-api", url = "${document_management.api_gateway.url}",
     configuration = DocumentMetadataDownloadClientApi.DownloadConfiguration.class)
