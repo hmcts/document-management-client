@@ -8,11 +8,11 @@ import uk.gov.hmcts.reform.document.healthcheck.DocumentManagementHealthIndicato
 
 @Configuration
 @EnableFeignClients(basePackages = "uk.gov.hmcts.reform.document")
-public class DocumentManagementClientConfiguration {
+public class DocumentManagementClientAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "document_management", name = "api_gateway.url")
-    public DocumentManagementHealthIndicator coreCaseDataHealthIndicator(
+    public DocumentManagementHealthIndicator healthIndicator(
         DocumentMetadataDownloadClientApi documentMetadataDownloadClientApi
     ) {
         return new DocumentManagementHealthIndicator(documentMetadataDownloadClientApi);
