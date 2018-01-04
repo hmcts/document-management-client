@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.document.healthcheck.DocumentManagementHealthIndicator;
 
 @Configuration
+@ConditionalOnProperty(prefix = "document_management", name = "api_gateway.url")
 @EnableFeignClients(basePackages = "uk.gov.hmcts.reform.document")
 public class DocumentManagementClientAutoConfiguration {
 
     @Bean
-    @ConditionalOnProperty(prefix = "document_management", name = "api_gateway.url")
-    public DocumentManagementHealthIndicator healthIndicator(
+    public DocumentManagementHealthIndicator documentManagement(
         DocumentMetadataDownloadClientApi documentMetadataDownloadClientApi
     ) {
         return new DocumentManagementHealthIndicator(documentMetadataDownloadClientApi);

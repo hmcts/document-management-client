@@ -1,11 +1,11 @@
 package uk.gov.hmcts.reform.document;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,9 +36,8 @@ public interface DocumentMetadataDownloadClientApi {
     class DownloadConfiguration {
         @Bean
         @Primary
-        @Scope("prototype")
-        Decoder feignDecoder() {
-            return new JacksonDecoder();
+        Decoder feignDecoder(ObjectMapper objectMapper) {
+            return new JacksonDecoder(objectMapper);
         }
     }
 }

@@ -13,6 +13,12 @@ The two main responsibilities are:
 - [JDK 8](https://www.oracle.com/java)
 - [Docker](https://www.docker.com)
 
+## Usage
+
+Just include the library as your dependency and you will be to use the client class. Health check for DM service is provided as well.
+
+Components provided by this library will get automatically configured in a Spring context if `document_management.api_gateway.url` configuration property is defined and does not equal `false`. 
+ 
 ### Building
 
 The project uses [Gradle](https://gradle.org) as a build tool but you don't have install it locally since there is a
