@@ -10,7 +10,7 @@ buildscript {
 plugins {
   id 'checkstyle'
   id 'io.spring.dependency-management' version '1.0.3.RELEASE'
-  id 'org.springframework.boot' version '1.5.8.RELEASE'
+  id 'org.springframework.boot' version '2.0.1.RELEASE'
 }
 
 apply plugin: 'checkstyle'
@@ -21,7 +21,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
 group 'uk.gov.hmcts.reform'
-version '1.1.1'
+version '2.0.0'
 
 checkstyle {
   maxWarnings = 0
@@ -43,6 +43,9 @@ compileTestJava {
 repositories {
   maven {
     url "https://dl.bintray.com/hmcts/hmcts-maven"
+  }
+  maven {
+    url 'https://repo.spring.io/libs-milestone'
   }
   jcenter()
   mavenLocal()
@@ -130,12 +133,12 @@ bintray {
 }
 
 ext {
-  springCloudVersion = 'Dalston.SR4'
+  springCloudVersion = 'Finchley.M9'
 }
 
 dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign'
+  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
   compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
 }
 
@@ -145,6 +148,6 @@ dependencyManagement {
   }
 }
 
-bootRepackage {
-  enabled = false;
+bootJar {
+  enabled = false
 }
