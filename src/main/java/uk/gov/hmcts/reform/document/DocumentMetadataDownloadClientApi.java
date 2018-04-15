@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.document;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
