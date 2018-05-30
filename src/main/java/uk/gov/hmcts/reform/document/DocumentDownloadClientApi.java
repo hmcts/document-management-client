@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "document-management-download-gateway-api", url = "${document_management.api_gateway.url}")
+@FeignClient(name = "document-management-download-api", url = "${document_management.url}")
 public interface DocumentDownloadClientApi {
 
     @RequestMapping(method = RequestMethod.GET, value = "{document_download_uri}")
-    ResponseEntity<Resource> downloadBinary(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
-                                            @PathVariable("document_download_uri") String documentDownloadUri);
+    ResponseEntity<Resource> downloadBinary(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+        @RequestHeader("ServiceAuthorization") String serviceAuth,
+        @PathVariable("document_download_uri") String documentDownloadUri
+    );
 }
