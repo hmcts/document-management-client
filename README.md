@@ -17,7 +17,7 @@ The two main responsibilities are:
 
 Just include the library as your dependency and you will be to use the client class. Health check for DM service is provided as well.
 
-Components provided by this library will get automatically configured in a Spring context if `document_management.api_gateway.url` configuration property is defined and does not equal `false`. 
+Components provided by this library will get automatically configured in a Spring context if `document_management.url` configuration property is defined and does not equal `false`. 
  
 ### Building
 

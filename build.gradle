@@ -21,7 +21,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
 group 'uk.gov.hmcts.reform'
-version '2.0.0'
+version '3.0.0'
 
 checkstyle {
   maxWarnings = 0
@@ -106,7 +106,7 @@ publishing {
 
       pom.withXml {
         def root = asNode()
-        root.appendNode('description', 'Client library for communicating with document management gateway')
+        root.appendNode('description', 'Client library for communicating with document management api')
         root.appendNode('name', 'Document management client')
         root.appendNode('url', 'https://github.com/hmcts/document-management-client')
         root.children().last() + pomConfig

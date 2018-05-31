@@ -21,23 +21,23 @@ import uk.gov.hmcts.reform.document.domain.UploadResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @Service
 public class DocumentUploadClientApi {
 
-    private static final String AUTHORIZATION = "Authorization";
-    private static final String CONTENT_TYPE = "Content-Type";
     private static final String CLASSIFICATION = "classification";
     private static final String FILES = "files";
     private static final String DOCUMENTS_PATH = "/documents";
+    private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     private final String dmUri;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
     @Autowired
     public DocumentUploadClientApi(
-        @Value("${document_management.api_gateway.url}") final String dmUri,
+        @Value("${document_management.url}") final String dmUri,
         final RestTemplate restTemplate,
         final ObjectMapper objectMapper
     ) {
@@ -46,12 +46,15 @@ public class DocumentUploadClientApi {
         this.objectMapper = objectMapper;
     }
 
-    public UploadResponse upload(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
-                                 @RequestPart List<MultipartFile> files) {
+    public UploadResponse upload(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+        @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
+        @RequestPart List<MultipartFile> files
+    ) {
         try {
             MultiValueMap<String, Object> parameters = prepareRequest(files);
 
-            HttpHeaders httpHeaders = setHttpHeaders(authorisation);
+            HttpHeaders httpHeaders = setHttpHeaders(authorisation, serviceAuth);
 
             HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(parameters,
                 httpHeaders);
@@ -63,10 +66,11 @@ public class DocumentUploadClientApi {
         }
     }
 
-    private HttpHeaders setHttpHeaders(String authorizationToken) {
+    private HttpHeaders setHttpHeaders(String authorizationToken, String serviceAuth) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(AUTHORIZATION, authorizationToken);
-        headers.set(CONTENT_TYPE, MULTIPART_FORM_DATA_VALUE);
+        headers.add(HttpHeaders.AUTHORIZATION, authorizationToken);
+        headers.add(SERVICE_AUTHORIZATION, serviceAuth);
+        headers.set(HttpHeaders.CONTENT_TYPE, MULTIPART_FORM_DATA_VALUE);
         return headers;
     }
 
@@ -84,6 +88,7 @@ public class DocumentUploadClientApi {
     }
 
     private static HttpHeaders buildPartHeaders(MultipartFile file) {
+        requireNonNull(file.getContentType());
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(file.getContentType()));
         return headers;

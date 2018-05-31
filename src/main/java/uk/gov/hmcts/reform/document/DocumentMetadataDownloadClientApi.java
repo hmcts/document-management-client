@@ -17,13 +17,16 @@ import uk.gov.hmcts.reform.document.healthcheck.InternalHealth;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
-@FeignClient(name = "document-management-metadata-download-gateway-api", url = "${document_management.api_gateway.url}",
+@FeignClient(name = "document-management-metadata-download-api", url = "${document_management.url}",
     configuration = DocumentMetadataDownloadClientApi.DownloadConfiguration.class)
 public interface DocumentMetadataDownloadClientApi {
 
     @RequestMapping(method = RequestMethod.GET, value = "{document_metadata_uri}")
-    Document getDocumentMetadata(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
-                                 @PathVariable("document_metadata_uri") String documentMetadataUri);
+    Document getDocumentMetadata(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+        @RequestHeader("ServiceAuthorization") String serviceAuth,
+        @PathVariable("document_metadata_uri") String documentMetadataUri
+    );
 
 
     @RequestMapping(
