@@ -31,6 +31,7 @@ public class DocumentUploadClientApi {
     private static final String FILES = "files";
     private static final String DOCUMENTS_PATH = "/documents";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+    public static final String USER_ID = "user-id";
     private final String dmUri;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -49,15 +50,17 @@ public class DocumentUploadClientApi {
     public UploadResponse upload(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
+        @RequestHeader(USER_ID) String userId,
         @RequestPart List<MultipartFile> files
     ) {
         try {
             MultiValueMap<String, Object> parameters = prepareRequest(files);
 
-            HttpHeaders httpHeaders = setHttpHeaders(authorisation, serviceAuth);
+            HttpHeaders httpHeaders = setHttpHeaders(authorisation, serviceAuth, userId);
 
-            HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(parameters,
-                httpHeaders);
+            HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(
+                parameters, httpHeaders
+            );
 
             final String t = restTemplate.postForObject(dmUri + DOCUMENTS_PATH, httpEntity, String.class);
             return objectMapper.readValue(t, UploadResponse.class);
@@ -66,11 +69,14 @@ public class DocumentUploadClientApi {
         }
     }
 
-    private HttpHeaders setHttpHeaders(String authorizationToken, String serviceAuth) {
+    private HttpHeaders setHttpHeaders(String authorizationToken, String serviceAuth, String userId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, authorizationToken);
         headers.add(SERVICE_AUTHORIZATION, serviceAuth);
+        headers.add(USER_ID, userId);
+
         headers.set(HttpHeaders.CONTENT_TYPE, MULTIPART_FORM_DATA_VALUE);
+
         return headers;
     }
 
