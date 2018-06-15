@@ -31,6 +31,7 @@ public class DocumentUploadClientApi {
     private static final String FILES = "files";
     private static final String DOCUMENTS_PATH = "/documents";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+    public static final String USER_ID = "user-id";
     private final String dmUri;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -49,7 +50,7 @@ public class DocumentUploadClientApi {
     public UploadResponse upload(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
-        @RequestHeader("user-id") String userId,
+        @RequestHeader(USER_ID) String userId,
         @RequestPart List<MultipartFile> files
     ) {
         try {
@@ -72,7 +73,7 @@ public class DocumentUploadClientApi {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, authorizationToken);
         headers.add(SERVICE_AUTHORIZATION, serviceAuth);
-        headers.add("user-id", userId);
+        headers.add(USER_ID, userId);
 
         headers.set(HttpHeaders.CONTENT_TYPE, MULTIPART_FORM_DATA_VALUE);
 
