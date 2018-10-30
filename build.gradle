@@ -10,7 +10,8 @@ buildscript {
 plugins {
   id 'checkstyle'
   id 'io.spring.dependency-management' version '1.0.5.RELEASE'
-  id 'org.springframework.boot' version '2.0.1.RELEASE'
+  id 'org.springframework.boot' version '2.0.6.RELEASE'
+  id 'com.github.ben-manes.versions' version '0.20.0'
 }
 
 apply plugin: 'checkstyle'
@@ -21,7 +22,20 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
 group 'uk.gov.hmcts.reform'
-version '4.0.0'
+version '4.0.1'
+
+dependencyUpdates.resolutionStrategy = {
+  componentSelection { rules ->
+    rules.all { ComponentSelection selection ->
+      boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+        selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+      }
+      if (rejected) {
+        selection.reject('Release candidate')
+      }
+    }
+  }
+}
 
 checkstyle {
   maxWarnings = 0
@@ -133,13 +147,14 @@ bintray {
 }
 
 ext {
-  springCloudVersion = 'Finchley.M9'
+  springCloudVersion = 'Finchley.RELEASE'
 }
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
-  compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
+  api group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+  api group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+  api group: 'io.github.openfeign', name: 'feign-jackson'
+
 }
 
 dependencyManagement {
