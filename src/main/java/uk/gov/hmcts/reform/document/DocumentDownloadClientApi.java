@@ -16,6 +16,7 @@ public interface DocumentDownloadClientApi {
     ResponseEntity<Resource> downloadBinary(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader("ServiceAuthorization") String serviceAuth,
+        @RequestHeader("user-roles") String userRoles,
         @PathVariable("document_download_uri") String documentDownloadUri
     );
 }
