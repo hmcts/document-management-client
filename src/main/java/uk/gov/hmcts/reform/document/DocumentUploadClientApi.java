@@ -50,34 +50,25 @@ public class DocumentUploadClientApi {
         this.objectMapper = objectMapper;
     }
 
-    public UploadResponse uploadWithUserId(
+    public UploadResponse upload(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
         @RequestHeader(USER_ID) String userId,
         @RequestPart List<MultipartFile> files
     ) {
-        return upload(authorisation, serviceAuth, userId, Collections.emptyList(), files);
+        return upload(authorisation, serviceAuth, userId, Collections.emptyList(), Classification.RESTRICTED, files);
     }
 
-    public UploadResponse uploadWithRoles(
+    public UploadResponse upload(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
         @RequestHeader(USER_ID) String userId,
         @RequestHeader(ROLES) List<String> roles,
+        @RequestHeader(CLASSIFICATION) Classification classification,
         @RequestPart List<MultipartFile> files
     ) {
-        return upload(authorisation, serviceAuth, userId, roles, files);
-    }
-
-    private UploadResponse upload(
-        String authorisation,
-        String serviceAuth,
-        String userId,
-        List<String> roles,
-        List<MultipartFile> files
-    ) {
         try {
-            MultiValueMap<String, Object> parameters = prepareRequest(files, roles);
+            MultiValueMap<String, Object> parameters = prepareRequest(files, roles, classification);
 
             HttpHeaders httpHeaders = setHttpHeaders(authorisation, serviceAuth, userId);
 
@@ -103,12 +94,16 @@ public class DocumentUploadClientApi {
         return headers;
     }
 
-    private static MultiValueMap<String, Object> prepareRequest(List<MultipartFile> files, List<String> roles) {
+    private static MultiValueMap<String, Object> prepareRequest(
+        List<MultipartFile> files,
+        List<String> roles,
+        Classification classification
+    ) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         files.stream()
             .map(DocumentUploadClientApi::buildPartFromFile)
             .forEach(file -> parameters.add(FILES, file));
-        parameters.add(CLASSIFICATION, Classification.RESTRICTED.name());
+        parameters.add(CLASSIFICATION, classification.name());
         parameters.add(ROLES, roles.stream().collect(Collectors.joining(",")));
         return parameters;
     }
