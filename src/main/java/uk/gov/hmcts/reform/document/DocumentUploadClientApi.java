@@ -19,7 +19,9 @@ import uk.gov.hmcts.reform.document.domain.Classification;
 import uk.gov.hmcts.reform.document.domain.UploadResponse;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -48,12 +50,31 @@ public class DocumentUploadClientApi {
         this.objectMapper = objectMapper;
     }
 
-    public UploadResponse upload(
+    public UploadResponse uploadWithUserId(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
         @RequestHeader(USER_ID) String userId,
-        @RequestHeader(ROLES) String roles,
         @RequestPart List<MultipartFile> files
+    ) {
+        return upload(authorisation, serviceAuth, userId, Collections.emptyList(), files);
+    }
+
+    public UploadResponse uploadWithRoles(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+        @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
+        @RequestHeader(USER_ID) String userId,
+        @RequestHeader(ROLES) List<String> roles,
+        @RequestPart List<MultipartFile> files
+    ) {
+        return upload(authorisation, serviceAuth, userId, roles, files);
+    }
+
+    private UploadResponse upload(
+        String authorisation,
+        String serviceAuth,
+        String userId,
+        List<String> roles,
+        List<MultipartFile> files
     ) {
         try {
             MultiValueMap<String, Object> parameters = prepareRequest(files, roles);
@@ -82,13 +103,13 @@ public class DocumentUploadClientApi {
         return headers;
     }
 
-    private static MultiValueMap<String, Object> prepareRequest(List<MultipartFile> files, String roles) {
+    private static MultiValueMap<String, Object> prepareRequest(List<MultipartFile> files, List<String> roles) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         files.stream()
             .map(DocumentUploadClientApi::buildPartFromFile)
             .forEach(file -> parameters.add(FILES, file));
         parameters.add(CLASSIFICATION, Classification.RESTRICTED.name());
-        parameters.add(ROLES, roles);
+        parameters.add(ROLES, roles.stream().collect(Collectors.joining(",")));
         return parameters;
     }
 
