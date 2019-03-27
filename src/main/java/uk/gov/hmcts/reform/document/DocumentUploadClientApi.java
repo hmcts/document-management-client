@@ -32,6 +32,7 @@ public class DocumentUploadClientApi {
     private static final String DOCUMENTS_PATH = "/documents";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     public static final String USER_ID = "user-id";
+    public static final String ROLES = "roles";
     private final String dmUri;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -51,10 +52,11 @@ public class DocumentUploadClientApi {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
         @RequestHeader(USER_ID) String userId,
+        @RequestHeader(ROLES) String roles,
         @RequestPart List<MultipartFile> files
     ) {
         try {
-            MultiValueMap<String, Object> parameters = prepareRequest(files);
+            MultiValueMap<String, Object> parameters = prepareRequest(files, roles);
 
             HttpHeaders httpHeaders = setHttpHeaders(authorisation, serviceAuth, userId);
 
@@ -80,12 +82,13 @@ public class DocumentUploadClientApi {
         return headers;
     }
 
-    private static MultiValueMap<String, Object> prepareRequest(List<MultipartFile> files) {
+    private static MultiValueMap<String, Object> prepareRequest(List<MultipartFile> files, String roles) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         files.stream()
             .map(DocumentUploadClientApi::buildPartFromFile)
             .forEach(file -> parameters.add(FILES, file));
         parameters.add(CLASSIFICATION, Classification.RESTRICTED.name());
+        parameters.add(ROLES, roles);
         return parameters;
     }
 
