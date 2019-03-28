@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,8 +64,8 @@ public class DocumentUploadClientApi {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
         @RequestHeader(USER_ID) String userId,
-        @RequestHeader(ROLES) List<String> roles,
-        @RequestHeader(CLASSIFICATION) Classification classification,
+        @RequestParam(ROLES) List<String> roles,
+        @RequestParam(CLASSIFICATION) Classification classification,
         @RequestPart List<MultipartFile> files
     ) {
         try {
