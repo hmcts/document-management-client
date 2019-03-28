@@ -17,6 +17,7 @@ public interface DocumentDownloadClientApi {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader("ServiceAuthorization") String serviceAuth,
         @RequestHeader("user-roles") String userRoles,
+        @RequestHeader("user-id") String userId,
         @PathVariable("document_download_uri") String documentDownloadUri
     );
 }

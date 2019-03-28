@@ -26,6 +26,7 @@ public interface DocumentMetadataDownloadClientApi {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader("ServiceAuthorization") String serviceAuth,
         @RequestHeader("user-roles") String userRoles,
+        @RequestHeader("user-id") String userId,
         @PathVariable("document_metadata_uri") String documentMetadataUri
     );
 

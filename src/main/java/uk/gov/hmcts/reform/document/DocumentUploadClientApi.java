@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +20,9 @@ import uk.gov.hmcts.reform.document.domain.Classification;
 import uk.gov.hmcts.reform.document.domain.UploadResponse;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -32,6 +35,7 @@ public class DocumentUploadClientApi {
     private static final String DOCUMENTS_PATH = "/documents";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     public static final String USER_ID = "user-id";
+    public static final String ROLES = "roles";
     private final String dmUri;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -53,8 +57,19 @@ public class DocumentUploadClientApi {
         @RequestHeader(USER_ID) String userId,
         @RequestPart List<MultipartFile> files
     ) {
+        return upload(authorisation, serviceAuth, userId, Collections.emptyList(), Classification.RESTRICTED, files);
+    }
+
+    public UploadResponse upload(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+        @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
+        @RequestHeader(USER_ID) String userId,
+        @RequestParam(ROLES) List<String> roles,
+        @RequestParam(CLASSIFICATION) Classification classification,
+        @RequestPart List<MultipartFile> files
+    ) {
         try {
-            MultiValueMap<String, Object> parameters = prepareRequest(files);
+            MultiValueMap<String, Object> parameters = prepareRequest(files, roles, classification);
 
             HttpHeaders httpHeaders = setHttpHeaders(authorisation, serviceAuth, userId);
 
@@ -80,12 +95,17 @@ public class DocumentUploadClientApi {
         return headers;
     }
 
-    private static MultiValueMap<String, Object> prepareRequest(List<MultipartFile> files) {
+    private static MultiValueMap<String, Object> prepareRequest(
+        List<MultipartFile> files,
+        List<String> roles,
+        Classification classification
+    ) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         files.stream()
             .map(DocumentUploadClientApi::buildPartFromFile)
             .forEach(file -> parameters.add(FILES, file));
-        parameters.add(CLASSIFICATION, Classification.RESTRICTED.name());
+        parameters.add(CLASSIFICATION, classification.name());
+        parameters.add(ROLES, roles.stream().collect(Collectors.joining(",")));
         return parameters;
     }
 
