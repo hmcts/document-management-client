@@ -22,7 +22,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
 group 'uk.gov.hmcts.reform'
-version '5.0.0'
+version '6.0.0'
 
 dependencyUpdates.resolutionStrategy = {
   componentSelection { rules ->
