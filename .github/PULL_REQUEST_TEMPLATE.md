@@ -1,27 +1,23 @@
-### JIRA link
+**Before creating a pull request make sure that:**
+
+- [ ] commit messages are meaningful and follow good commit message guidelines
+- [ ] README and other documentation has been updated / added (if needed)
+- [ ] tests have been updated / new tests has been added (if needed)
+
+Please remove this line and everything above and fill the following sections:
+
+
+### JIRA link (if applicable) ###
 
 
 
-### Change description
+### Change description ###
 
 
 
-### Work checklist
+**Does this PR introduce a breaking change?** (check one with "x")
 
-- [ ] Unit tests added where applicable
-- [ ] Route tests added for new pages
-- [ ] New pages included in a11y tests
-- [ ] Task list and task completeness checks updated
-- [ ] Check and send page updated
-- [ ] Routes, page content and page flows of new features are toggled 
-- [ ] UI changes look good on mobile
-- [ ] Required Google Analytics events are being sent 
-
-### Developer self-QA run statement
-
-- [ ] I have clicked through the running application to see if all changes I made actually work.
-
-### Does this PR introduce a breaking change?
-
-- [ ] Yes
-- [ ] No
+```
+[ ] Yes
+[ ] No
+```

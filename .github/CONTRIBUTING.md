@@ -5,8 +5,7 @@ as we have some expectations related to the content and quality of change sets.
 
 ## What you should know about this application
 
-This project is a new money claims web system, which aims to make resolving money claims between parties
-simpler, quicker and less stressful.
+This project is an client library for interfacing with the document management API.
 
 ## Before contributing
 
