@@ -56,6 +56,9 @@ To run all checks (including unit tests) please execute the following command:
 We use [SemVer](http://semver.org/) for versioning.
 For the versions available, see the tags on this repository.
 
+To release a new version add a tag with the version number and push this up to the origin repository. This will then 
+build and publish the release to maven.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
