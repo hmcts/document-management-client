@@ -17,7 +17,6 @@ plugins {
 apply plugin: 'checkstyle'
 apply plugin: 'java-library'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
@@ -41,7 +40,7 @@ checkstyle {
   maxWarnings = 0
   toolVersion = '8.3'
   // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
-  configDir = new File(rootDir, 'config/checkstyle')
+  configDirectory.set(new File(rootDir, 'config/checkstyle'))
 }
 
 sourceCompatibility = 1.8
@@ -81,7 +80,7 @@ task printVersion {
 def pomConfig = {
   licenses {
     license {
-      name "MIT License"
+      name = "MIT License"
       url "http://www.opensource.org/licenses/mit-license.php"
       distribution "repo"
     }
@@ -94,12 +93,12 @@ def pomConfig = {
 
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-  classifier = 'sources'
+  getArchiveClassifier().set('sources')
   from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier = 'javadoc'
+  getArchiveClassifier().set('javadoc')
   from javadoc.destinationDir
 }
 
