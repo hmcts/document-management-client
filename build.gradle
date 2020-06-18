@@ -64,6 +64,18 @@ compileTestJava {
   options.compilerArgs << '-Xlint:deprecation'
 }
 
+tasks.withType(Test) {
+  useJUnitPlatform()
+
+  testLogging {
+    exceptionFormat = 'full'
+  }
+}
+
+test {
+  failFast = true
+}
+
 repositories {
   maven {
     url "https://dl.bintray.com/hmcts/hmcts-maven"
@@ -156,6 +168,21 @@ bintray {
   }
 }
 
+def versions = [
+  junit             : '5.6.2',
+  junitPlatform     : '1.6.2',
+]
+
+ext.libraries = [
+  junit5: [
+    "org.junit.jupiter:junit-jupiter-api:${versions.junit}",
+    "org.junit.jupiter:junit-jupiter-engine:${versions.junit}",
+    "org.junit.jupiter:junit-jupiter-params:${versions.junit}",
+    "org.junit.platform:junit-platform-commons:${versions.junitPlatform}",
+    "org.junit.platform:junit-platform-engine:${versions.junitPlatform}"
+  ]
+]
+
 ext {
   springCloudVersion = 'Hoxton.SR5'
 }
@@ -165,6 +192,9 @@ dependencies {
   api group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
   api group: 'io.github.openfeign', name: 'feign-jackson'
 
+  testImplementation libraries.junit5
+  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.16.1'
+  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.3.3'
 }
 
 dependencyManagement {
