@@ -10,7 +10,7 @@ buildscript {
 plugins {
   id 'checkstyle'
   id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-  id 'org.springframework.boot' version '2.0.6.RELEASE'
+  id 'org.springframework.boot' version '2.3.1.RELEASE'
   id 'com.github.ben-manes.versions' version '0.28.0'
   id 'org.owasp.dependencycheck' version '5.3.2.1'
 }
@@ -157,7 +157,7 @@ bintray {
 }
 
 ext {
-  springCloudVersion = 'Finchley.RELEASE'
+  springCloudVersion = 'Hoxton.SR5'
 }
 
 dependencies {
@@ -170,6 +170,12 @@ dependencies {
 dependencyManagement {
   imports {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
+  dependencies {
+    // CVE-2019-10086 until 1.9.3
+    dependencySet(group: 'commons-beanutils', version: '1.9.4') {
+      entry 'commons-beanutils'
+    }
   }
 }
 
