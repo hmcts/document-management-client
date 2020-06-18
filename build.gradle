@@ -23,6 +23,8 @@ apply plugin: 'com.jfrog.bintray'
 group 'uk.gov.hmcts.reform'
 version '6.0.0'
 
+sourceCompatibility = 1.8
+
 // before committing a change, make sure task still works
 dependencyUpdates {
   def isNonStable = { String version ->
@@ -54,14 +56,26 @@ checkstyle {
   configDirectory.set(new File(rootDir, 'config/checkstyle'))
 }
 
-sourceCompatibility = 1.8
-
-compileJava {
-  options.compilerArgs << '-parameters' << '-Xlint:deprecation'
+sourceSets {
+  integrationTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/integrationTest/java')
+    }
+    resources.srcDir file('src/integrationTest/resources')
+  }
 }
 
-compileTestJava {
-  options.compilerArgs << '-Xlint:deprecation'
+tasks.withType(JavaCompile) {
+  options.compilerArgs << "-Xlint:unchecked" << "-Werror" << '-Xlint:deprecation'
+}
+
+task integration(type: Test) {
+  description = 'Runs integration tests'
+  group = 'Verification'
+  testClassesDirs = sourceSets.integrationTest.output.classesDirs
+  classpath = sourceSets.integrationTest.runtimeClasspath
 }
 
 tasks.withType(Test) {
@@ -70,9 +84,7 @@ tasks.withType(Test) {
   testLogging {
     exceptionFormat = 'full'
   }
-}
 
-test {
   failFast = true
 }
 
@@ -195,6 +207,13 @@ dependencies {
   testImplementation libraries.junit5
   testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.16.1'
   testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.3.3'
+
+  integrationTestImplementation sourceSets.main.runtimeClasspath
+  integrationTestImplementation sourceSets.test.runtimeClasspath
+  integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
+    exclude group: 'junit', module: 'junit'
+    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+  }
 }
 
 dependencyManagement {
