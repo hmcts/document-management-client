@@ -25,3 +25,5 @@ jobs:
           java-version: 11
       - name: Run checks
         run: ./gradlew check
+      - name: Run integration tests
+        run: ./gradlew integration
