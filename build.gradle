@@ -157,7 +157,7 @@ bintray {
 }
 
 ext {
-  springCloudVersion = 'Finchley.RELEASE'
+  springCloudVersion = 'Hoxton.SR5'
 }
 
 dependencies {
