@@ -15,7 +15,7 @@ import uk.gov.hmcts.reform.document.domain.Document;
 import uk.gov.hmcts.reform.document.healthcheck.InternalHealth;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @FeignClient(name = "document-management-metadata-download-api", url = "${document_management.url}",
     configuration = DocumentMetadataDownloadClientApi.DownloadConfiguration.class)
@@ -34,7 +34,7 @@ public interface DocumentMetadataDownloadClientApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/health",
-        headers = CONTENT_TYPE + "=" + APPLICATION_JSON_UTF8_VALUE
+        headers = CONTENT_TYPE + "=" + APPLICATION_JSON_VALUE
     )
     InternalHealth health();
 
