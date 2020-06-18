@@ -7,13 +7,4 @@
     <cve>CVE-2018-1258</cve>
   </suppress>
 
-  <suppress>
-    <notes><![CDATA[
-      Will be gone when checkstyle plugin is updated
-    ]]></notes>
-    <gav regex="true">^.*$</gav>
-    <cve>CVE-2019-10782</cve>
-    <cve>CVE-2019-9658</cve>
-  </suppress>
-
 </suppressions>
