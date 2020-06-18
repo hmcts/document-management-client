@@ -12,9 +12,6 @@
       Will be gone when checkstyle plugin is updated
     ]]></notes>
     <gav regex="true">^.*$</gav>
-<!--    <cpe>cpe:/a:apache:commons_beanutils</cpe>-->
-    <cve>CVE-2019-10086</cve>
-<!--    <cpe>cpe:/a:checkstyle:checkstyle</cpe>-->
     <cve>CVE-2019-10782</cve>
     <cve>CVE-2019-9658</cve>
   </suppress>

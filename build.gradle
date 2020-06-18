@@ -171,6 +171,12 @@ dependencyManagement {
   imports {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
   }
+  dependencies {
+    // CVE-2019-10086 until 1.9.3
+    dependencySet(group: 'commons-beanutils', version: '1.9.4') {
+      entry 'commons-beanutils'
+    }
+  }
 }
 
 bootJar {
