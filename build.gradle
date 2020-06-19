@@ -117,7 +117,7 @@ task printVersion {
 def pomConfig = {
   licenses {
     license {
-      name = "MIT License"
+      name "MIT License"
       url "http://www.opensource.org/licenses/mit-license.php"
       distribution "repo"
     }
@@ -162,16 +162,6 @@ publishing {
         root.children().last() + pomConfig
       }
     }
-    mavenJava(MavenPublication) {
-      versionMapping {
-        usage('java-api') {
-          fromResolutionOf('runtimeClasspath')
-        }
-        usage('java-runtime') {
-          fromResolutionResult()
-        }
-      }
-    }
   }
 }
 
@@ -214,7 +204,7 @@ ext {
 dependencies {
   api group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
   api group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  api group: 'io.github.openfeign', name: 'feign-jackson'
+  api group: 'io.github.openfeign', name: 'feign-jackson', version: '11.0'
 
   testImplementation libraries.junit5
   testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.16.1'
