@@ -20,8 +20,10 @@ apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
+def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
+
 group 'uk.gov.hmcts.reform'
-version '7.0.0'
+version buildNumber
 
 sourceCompatibility = 1.8
 
