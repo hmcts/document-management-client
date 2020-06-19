@@ -162,16 +162,6 @@ publishing {
         root.children().last() + pomConfig
       }
     }
-    mavenJava(MavenPublication) {
-      versionMapping {
-        usage('java-api') {
-          fromResolutionOf('runtimeClasspath')
-        }
-        usage('java-runtime') {
-          fromResolutionResult()
-        }
-      }
-    }
   }
 }
 
