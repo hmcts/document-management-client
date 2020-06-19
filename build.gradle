@@ -204,7 +204,7 @@ ext {
 dependencies {
   api group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
   api group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  api group: 'io.github.openfeign', name: 'feign-jackson'
+  api group: 'io.github.openfeign', name: 'feign-jackson', version: '11.0'
 
   testImplementation libraries.junit5
   testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.16.1'
