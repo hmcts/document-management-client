@@ -7,4 +7,30 @@
     <cve>CVE-2018-1258</cve>
   </suppress>
 
+  <!-- integration tests. wiremock -->
+  <suppress until="2020-10-01">
+    <notes><![CDATA[No fix available]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring\-cloud\-contract\-wiremock@2\.2\.3.*$</packageUrl>
+    <cve>CVE-2018-9116</cve>
+    <cve>CVE-2018-9117</cve>
+  </suppress>
+
+  <suppress until="2020-10-01">
+    <notes><![CDATA[
+      This is only used for TESTING purposes.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:javascript/jquery@3\.4\.1.*$</packageUrl>
+    <vulnerabilityName>Regex in its jQuery.htmlPrefilter  sometimes may introduce XSS</vulnerabilityName>
+  </suppress>
+
+  <suppress until="2020-10-01">
+    <notes><![CDATA[
+  This is only used for TESTING purposes.
+  ]]></notes>
+    <packageUrl regex="true">^pkg:javascript/handlebars@4\.0\.4.*$</packageUrl>
+    <vulnerabilityName>A prototype pollution vulnerability in handlebars is exploitable if an attacker can control the template</vulnerabilityName>
+    <vulnerabilityName>Disallow calling helperMissing and blockHelperMissing directly</vulnerabilityName>
+    <vulnerabilityName>Prototype pollution</vulnerabilityName>
+  </suppress>
+
 </suppressions>

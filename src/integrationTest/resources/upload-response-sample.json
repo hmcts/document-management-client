@@ -1,0 +1,19 @@
+{
+  "_embedded": {
+    "documents": [{
+      "classification": "private",
+      "size": 0,
+      "mimeType": "application/octet-stream",
+      "originalDocumentName": "original-name",
+      "createdBy": "integration-test",
+      "_links": {
+        "self": {
+          "href": "self_value"
+        },
+        "binary": {
+          "href": "binary_value"
+        }
+      }
+    }]
+  }
+}
