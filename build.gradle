@@ -2,9 +2,6 @@ buildscript {
   repositories {
     jcenter()
   }
-  dependencies {
-    classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
-  }
 }
 
 plugins {
@@ -18,7 +15,6 @@ plugins {
 apply plugin: 'checkstyle'
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
 
 def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
 
@@ -165,22 +161,6 @@ publishing {
   }
 }
 
-bintray {
-  user = System.getenv('BINTRAY_USER')
-  key = System.getenv('BINTRAY_KEY')
-  publications = ['Main']
-  publish = true
-  pkg {
-    repo = 'hmcts-maven'
-    name = 'document-management-client'
-    userOrg = 'hmcts'
-    licenses = ['MIT']
-    vcsUrl = 'https://github.com/hmcts/document-management-client'
-    version {
-      name = project.version
-    }
-  }
-}
 
 def versions = [
   junit             : '5.6.2',

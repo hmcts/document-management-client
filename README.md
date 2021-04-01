@@ -1,7 +1,7 @@
 # Document management client
 
 ![](https://github.com/hmcts/document-management-client/workflows/CI/badge.svg)
-[ ![Download](https://api.bintray.com/packages/hmcts/hmcts-maven/document-management-client/images/download.svg) ](https://bintray.com/hmcts/hmcts-maven/document-management-client/_latestVersion)
+[![Download](https://jitpack.io/v/hmcts/ccd-client.svg) ](https://jitpack.io/#hmcts/ccd-client)
 
 The service provides a set methods to integrate with document management.
 The two main responsibilities are:
