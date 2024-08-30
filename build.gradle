@@ -6,9 +6,9 @@ buildscript {
 
 plugins {
   id 'checkstyle'
-  id 'io.spring.dependency-management' version '1.1.4'
   id 'org.springframework.boot' version '2.7.18'
-  id 'com.github.ben-manes.versions' version '0.50.0'
+  id 'io.spring.dependency-management' version '1.1.6'
+  id 'com.github.ben-manes.versions' version '0.51.0'
   id 'org.owasp.dependencycheck' version '5.3.2.1'
 }
 
@@ -21,7 +21,11 @@ def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?:
 group 'uk.gov.hmcts.reform'
 version buildNumber
 
+<<<<<<< HEAD
 sourceCompatibility = 17
+=======
+sourceCompatibility = 11
+>>>>>>> master
 
 // before committing a change, make sure task still works
 dependencyUpdates {
@@ -167,8 +171,8 @@ publishing {
 
 
 def versions = [
-  junit             : '5.10.1',
-  junitPlatform     : '1.10.1',
+  junit             : '5.11.0',
+  junitPlatform     : '1.11.0',
 ]
 
 ext.libraries = [
@@ -188,11 +192,16 @@ ext {
 dependencies {
   api group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
   api group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  api group: 'io.github.openfeign', name: 'feign-jackson', version: '13.1'
+  api group: 'io.github.openfeign', name: 'feign-jackson', version: '13.3'
 
   testImplementation libraries.junit5
+<<<<<<< HEAD
   testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.24.2'
   testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.12.4'
+=======
+  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.26.3'
+  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.13.0'
+>>>>>>> master
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
@@ -203,7 +212,7 @@ dependencies {
   integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock', version: '2.2.6.RELEASE', {
     exclude group: 'com.github.tomakehurst', module: 'wiremock-jre8-standalone'
   }
-  integrationTestImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8', version: '2.35.1'
+  integrationTestImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8', version: '2.35.2'
 }
 
 dependencyManagement {
