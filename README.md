@@ -1,7 +1,7 @@
 # Document management client
 
 ![](https://github.com/hmcts/document-management-client/workflows/CI/badge.svg)
-[![Download](https://jitpack.io/v/hmcts/ccd-client.svg) ](https://jitpack.io/#hmcts/ccd-client)
+[![](https://jitpack.io/v/hmcts/document-management-client.svg)](https://jitpack.io/#hmcts/document-management-client)
 
 The service provides a set methods to integrate with document management.
 The two main responsibilities are:
@@ -12,7 +12,7 @@ The two main responsibilities are:
 
 ### Prerequisites
 
-- [JDK 8](https://www.oracle.com/java)
+- [JDK 17](https://www.oracle.com/java)
 - [Docker](https://www.docker.com)
 
 ## Usage
