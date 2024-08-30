@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
     configuration = DocumentMetadataDownloadClientApi.DownloadConfiguration.class)
 public interface DocumentMetadataDownloadClientApi {
 
-    @RequestMapping(method = RequestMethod.GET, value = "{document_metadata_uri}")
+    @GetMapping(value = "{document_metadata_uri}")
     Document getDocumentMetadata(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader("ServiceAuthorization") String serviceAuth,
@@ -31,8 +32,7 @@ public interface DocumentMetadataDownloadClientApi {
     );
 
 
-    @RequestMapping(
-        method = RequestMethod.GET,
+    @GetMapping(
         value = "/health",
         headers = CONTENT_TYPE + "=" + APPLICATION_JSON_VALUE
     )
