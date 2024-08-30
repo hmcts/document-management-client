@@ -21,11 +21,7 @@ def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?:
 group 'uk.gov.hmcts.reform'
 version buildNumber
 
-<<<<<<< HEAD
 sourceCompatibility = 17
-=======
-sourceCompatibility = 11
->>>>>>> master
 
 // before committing a change, make sure task still works
 dependencyUpdates {
