@@ -191,13 +191,8 @@ dependencies {
   api group: 'io.github.openfeign', name: 'feign-jackson', version: '13.3'
 
   testImplementation libraries.junit5
-<<<<<<< HEAD
-  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.24.2'
-  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.12.4'
-=======
   testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.26.3'
   testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.13.0'
->>>>>>> master
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
