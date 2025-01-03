@@ -188,7 +188,7 @@ dependencies {
 
   testImplementation libraries.junit5
   testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.27.0'
-  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.14.2'
+  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.15.2'
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
