@@ -221,7 +221,6 @@ dependencyManagement {
     dependencySet(group: 'commons-beanutils', version: '1.10.1') {
       entry 'commons-beanutils'
     }
-    implementation 'org.codehaus.groovy:groovy-xml:2.5.14'
   }
 }
 
