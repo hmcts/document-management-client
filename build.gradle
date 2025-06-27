@@ -18,7 +18,7 @@ apply plugin: 'maven-publish'
 
 def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
 
-group 'uk.gov.hmcts.reform'
+group 'com.github.hmcts'
 version buildNumber
 
 sourceCompatibility = 1.8
@@ -86,26 +86,17 @@ tasks.withType(Test) {
   failFast = true
 }
 
-publishing {
-  repositories {
-    maven {
-      url "https://dl.bintray.com/hmcts/hmcts-maven"
-    }
-    maven {
-      url 'https://repo.spring.io/libs-milestone'
-    }
-    jcenter()
-    mavenLocal()
-    mavenCentral()
-    maven {
-      name = "AzureArtifacts"
-      url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
-      credentials {
-        username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
-        password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
-      }
-    }
+
+repositories {
+  maven {
+    url "https://dl.bintray.com/hmcts/hmcts-maven"
   }
+  maven {
+    url 'https://repo.spring.io/libs-milestone'
+  }
+  jcenter()
+  mavenLocal()
+  mavenCentral()
 }
 
 jar {
@@ -167,6 +158,17 @@ publishing {
         root.appendNode('name', 'Document management client')
         root.appendNode('url', 'https://github.com/hmcts/document-management-client')
         root.children().last() + pomConfig
+      }
+    }
+  }
+
+  repositories {
+    maven {
+      name = "AzureArtifacts"
+      url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+      credentials {
+        username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+        password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
       }
     }
   }
