@@ -208,7 +208,7 @@ dependencyManagement {
   }
   dependencies {
     // CVE-2019-10086 until 1.9.3
-    dependencySet(group: 'commons-beanutils', version: '1.10.1') {
+    dependencySet(group: 'commons-beanutils', version: '1.11.0') {
       entry 'commons-beanutils'
     }
   }
