@@ -88,14 +88,13 @@ tasks.withType(Test) {
 
 repositories {
   maven {
-    url "https://dl.bintray.com/hmcts/hmcts-maven"
-  }
-  maven {
     url 'https://repo.spring.io/libs-milestone'
   }
-  jcenter()
   mavenLocal()
   mavenCentral()
+  maven {
+    url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+  }
 }
 
 jar {
