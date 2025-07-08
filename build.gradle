@@ -86,6 +86,10 @@ tasks.withType(Test) {
   failFast = true
 }
 
+tasks.withType(Copy).configureEach {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 repositories {
   maven {
     url 'https://repo.spring.io/libs-milestone'
