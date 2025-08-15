@@ -184,7 +184,7 @@ ext.libraries = [
 ]
 
 ext {
-  springCloudVersion = 'Hoxton.SR5'
+  springCloudVersion = '2025.0.0'
 }
 
 dependencies {
@@ -202,7 +202,7 @@ dependencies {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
-  integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock', version: '2.2.8.RELEASE', {
+  integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock', version: '4.3.0', {
     exclude group: 'com.github.tomakehurst', module: 'wiremock-jre8-standalone'
   }
   integrationTestImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8', version: '2.35.2'
