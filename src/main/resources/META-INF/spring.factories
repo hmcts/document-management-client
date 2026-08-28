@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  uk.gov.hmcts.reform.document.DocumentUploadClientApi,\
   uk.gov.hmcts.reform.document.DocumentManagementClientAutoConfiguration

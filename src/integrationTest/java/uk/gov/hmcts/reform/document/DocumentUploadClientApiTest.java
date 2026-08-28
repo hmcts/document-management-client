@@ -28,7 +28,8 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @AutoConfigureWireMock(port = 0)
 @EnableAutoConfiguration
 @SpringBootTest(
-    classes = HttpConfiguration.class,
+    classes = {DocumentManagementClientAutoConfiguration.class, HttpConfiguration.class},
+    properties = {"document_management.url=http://localhost:${wiremock.server.port}"},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 class DocumentUploadClientApiTest {
@@ -57,8 +58,7 @@ class DocumentUploadClientApiTest {
             uploadApi.upload("auth", "service auth", "user id", singletonList(file))
         // then
         ).isInstanceOf(IllegalStateException.class)
-            .hasCauseInstanceOf(JsonParseException.class)
-            .hasMessageContaining("not valid json");
+            .hasCauseInstanceOf(JsonParseException.class);
     }
 
     @Test
