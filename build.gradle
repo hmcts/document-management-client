@@ -154,8 +154,8 @@ publishing {
 
 
 def versions = [
-  junit             : '5.11.4',
-  junitPlatform     : '1.11.4',
+  junit             : '5.14.4',
+  junitPlatform     : '1.14.4',
 ]
 
 ext.libraries = [
