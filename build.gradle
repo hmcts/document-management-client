@@ -1,31 +1,35 @@
 plugins {
   id 'checkstyle'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '2.3.1.RELEASE'
+  id 'org.springframework.boot' version '3.4.3'
   id 'com.github.ben-manes.versions' version '0.52.0'
   id 'org.owasp.dependencycheck' version '12.2.2'
+  id 'java-library'
+  id 'maven-publish'
 }
-
-apply plugin: 'checkstyle'
-apply plugin: 'java-library'
-apply plugin: 'maven-publish'
 
 def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
 
-group 'com.github.hmcts'
-version buildNumber
+group = 'com.github.hmcts'
+version = buildNumber
 
-sourceCompatibility = 11
-
-// before committing a change, make sure task still works
-dependencyUpdates {
-  def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { qualifier -> version.toUpperCase().contains(qualifier) }
-    def regex = /^[0-9,.v-]+$/
-    return !stableKeyword && !(version ==~ regex)
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
   }
-  rejectVersionIf { selection -> // <---- notice how the closure argument is named
-    return isNonStable(selection.candidate.version) && !isNonStable(selection.currentVersion)
+  withSourcesJar()
+}
+
+dependencyUpdates.resolutionStrategy = {
+  componentSelection { rules ->
+    rules.all { ComponentSelection selection ->
+      boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+        selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+      }
+      if (rejected) {
+        selection.reject('Release candidate')
+      }
+    }
   }
 }
 
@@ -43,9 +47,9 @@ dependencyCheck {
 
 checkstyle {
   maxWarnings = 0
-  toolVersion = '8.33'
+  toolVersion = '13.11.0'
   // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
-  configDirectory.set(new File(rootDir, 'config/checkstyle'))
+  getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
 sourceSets {
@@ -59,18 +63,22 @@ sourceSets {
   }
 }
 
-tasks.withType(JavaCompile) {
-  options.compilerArgs << "-Xlint:unchecked" << "-Werror" << '-Xlint:deprecation'
+compileJava {
+  options.compilerArgs << '-parameters' << '-Xlint:deprecation'
 }
 
-task integration(type: Test) {
+compileTestJava {
+  options.compilerArgs << '-Xlint:deprecation'
+}
+
+tasks.register('integration', Test) {
   description = 'Runs integration tests'
   group = 'Verification'
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
   useJUnitPlatform()
 
   testLogging {
@@ -84,77 +92,29 @@ tasks.withType(Copy).configureEach {
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-repositories {
-  mavenLocal()
-  mavenCentral()
-  maven {
-    url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
-  }
+// https://github.com/gradle/gradle/issues/16791
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
 jar {
+  archiveClassifier = ''
+  enabled = true
   manifest {
     attributes 'Implementation-Title': project.name, 'Implementation-Version': project.version
   }
 }
 
-task printVersion {
+tasks.register('printVersion') {
   doLast {
     print project.version
   }
 }
 
 
-def pomConfig = {
-  licenses {
-    license {
-      name "MIT License"
-      url "http://www.opensource.org/licenses/mit-license.php"
-      distribution "repo"
-    }
-  }
-
-  scm {
-    url "https://github.com/hmcts/document-management-client"
-  }
-}
-
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-  getArchiveClassifier().set('sources')
-  from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-  getArchiveClassifier().set('javadoc')
-  from javadoc.destinationDir
-}
-
-artifacts {
-  archives sourcesJar
-  archives javadocJar
-}
+def gitRepo = "https://github.com/hmcts/document-management-client"
 
 publishing {
-  publications {
-    Main(MavenPublication) {
-      from components.java
-      artifact sourcesJar
-      artifact javadocJar
-      groupId project.group
-      artifactId 'document-management-client'
-      version project.version
-
-      pom.withXml {
-        def root = asNode()
-        root.appendNode('description', 'Client library for communicating with document management api')
-        root.appendNode('name', 'Document management client')
-        root.appendNode('url', 'https://github.com/hmcts/document-management-client')
-        root.children().last() + pomConfig
-      }
-    }
-  }
-
   repositories {
     maven {
       name = "AzureArtifacts"
@@ -162,6 +122,31 @@ publishing {
       credentials {
         username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
         password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
+      }
+    }
+  }
+
+  publications {
+    create('main', MavenPublication) {
+      from components.java
+
+      artifactId = 'document-management-client'
+
+      pom {
+        name = 'Document management client'
+        description = 'Client library for communicating with document management api'
+        url = gitRepo
+
+        licenses {
+          license {
+            name = "MIT License"
+            url = "http://www.opensource.org/licenses/mit-license.php"
+            distribution = "repo"
+          }
+        }
+        scm {
+          url = gitRepo
+        }
       }
     }
   }
@@ -179,12 +164,13 @@ ext.libraries = [
     "org.junit.jupiter:junit-jupiter-engine:${versions.junit}",
     "org.junit.jupiter:junit-jupiter-params:${versions.junit}",
     "org.junit.platform:junit-platform-commons:${versions.junitPlatform}",
-    "org.junit.platform:junit-platform-engine:${versions.junitPlatform}"
+    "org.junit.platform:junit-platform-engine:${versions.junitPlatform}",
+    "org.junit.platform:junit-platform-launcher:${versions.junitPlatform}"
   ]
 ]
 
 ext {
-  springCloudVersion = 'Hoxton.SR5'
+  springCloudVersion = '2024.0.1'
 }
 
 dependencies {
@@ -202,10 +188,10 @@ dependencies {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
-  integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock', version: '2.2.8.RELEASE', {
-    exclude group: 'com.github.tomakehurst', module: 'wiremock-jre8-standalone'
+  integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock', {
+    exclude group: 'org.wiremock', module: 'wiremock-standalone'
   }
-  integrationTestImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8', version: '2.35.2'
+  integrationTestImplementation group: 'org.wiremock', name: 'wiremock', version: '3.12.1'
 }
 
 dependencyManagement {
@@ -221,9 +207,10 @@ dependencyManagement {
 }
 
 bootJar {
+  archiveClassifier = 'boot'
   enabled = false
 }
 
-jar {
-  enabled = true
+wrapper {
+  distributionType = Wrapper.DistributionType.ALL
 }
