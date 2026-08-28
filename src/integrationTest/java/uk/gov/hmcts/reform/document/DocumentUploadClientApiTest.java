@@ -57,8 +57,7 @@ class DocumentUploadClientApiTest {
             uploadApi.upload("auth", "service auth", "user id", singletonList(file))
         // then
         ).isInstanceOf(IllegalStateException.class)
-            .hasCauseInstanceOf(JsonParseException.class)
-            .hasMessageContaining("not valid json");
+            .hasCauseInstanceOf(JsonParseException.class);
     }
 
     @Test

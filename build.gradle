@@ -188,10 +188,8 @@ dependencies {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
-  integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock', {
-    exclude group: 'org.wiremock', module: 'wiremock-standalone'
-  }
-  integrationTestImplementation group: 'org.wiremock', name: 'wiremock', version: '3.12.1'
+  integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock'
+  integrationTestImplementation group: 'com.google.guava', name: 'guava', version: '33.4.8-jre'
 }
 
 dependencyManagement {
