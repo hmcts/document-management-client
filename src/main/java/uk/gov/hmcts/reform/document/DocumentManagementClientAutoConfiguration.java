@@ -17,6 +17,12 @@ public class DocumentManagementClientAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public DocumentUploadClientApi documentUploadClientApi(
         @Value("${document_management.url}") String dmUri,
         RestTemplate restTemplate,

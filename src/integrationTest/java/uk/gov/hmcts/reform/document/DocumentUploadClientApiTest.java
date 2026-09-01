@@ -1,14 +1,17 @@
 package uk.gov.hmcts.reform.document;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.google.common.io.Resources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.document.config.HttpConfiguration;
 import uk.gov.hmcts.reform.document.domain.Classification;
@@ -18,28 +21,35 @@ import uk.gov.hmcts.reform.document.utils.InMemoryMultipartFile;
 import java.io.IOException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.reset;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-@AutoConfigureWireMock(port = 0)
 @EnableAutoConfiguration
 @SpringBootTest(
     classes = {DocumentManagementClientAutoConfiguration.class, HttpConfiguration.class},
-    properties = {"document_management.url=http://localhost:${wiremock.server.port}"},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 class DocumentUploadClientApiTest {
+
+    @RegisterExtension
+    static WireMockExtension wireMock = WireMockExtension.newInstance()
+        .options(wireMockConfig().dynamicPort())
+        .build();
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("document_management.url", wireMock::baseUrl);
+    }
 
     @Autowired
     private DocumentUploadClientApi uploadApi;
 
     @BeforeEach
     void before() {
-        reset();
+        wireMock.resetAll();
     }
 
     @Test
@@ -51,7 +61,7 @@ class DocumentUploadClientApiTest {
             MediaType.APPLICATION_PDF_VALUE,
             new byte[] {}
         );
-        givenThat(post("/documents").willReturn(aResponse().withBody("{not valid json}")));
+        wireMock.stubFor(post("/documents").willReturn(aResponse().withBody("{not valid json}")));
 
         assertThatCode(() ->
             // when
@@ -70,7 +80,7 @@ class DocumentUploadClientApiTest {
             MediaType.APPLICATION_PDF_VALUE,
             new byte[] {}
         );
-        givenThat(
+        wireMock.stubFor(
             post("/documents")
                 .willReturn(
                     aResponse()
