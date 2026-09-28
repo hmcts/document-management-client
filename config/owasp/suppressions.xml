@@ -1,36 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-
-  <suppress until="2020-10-01">
-    <notes><![CDATA[No fix is available]]></notes>
-    <gav regex="true">^org\.springframework\.security:spring-security-crypto:5\.3\.3\.RELEASE$</gav>
-    <cve>CVE-2018-1258</cve>
-  </suppress>
-
-  <!-- integration tests. wiremock -->
-  <suppress until="2020-10-01">
-    <notes><![CDATA[No fix available]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring\-cloud\-contract\-wiremock@2\.2\.3.*$</packageUrl>
-    <cve>CVE-2018-9116</cve>
-    <cve>CVE-2018-9117</cve>
-  </suppress>
-
-  <suppress until="2020-10-01">
-    <notes><![CDATA[
-      This is only used for TESTING purposes.
-    ]]></notes>
-    <packageUrl regex="true">^pkg:javascript/jquery@3\.4\.1.*$</packageUrl>
-    <vulnerabilityName>Regex in its jQuery.htmlPrefilter  sometimes may introduce XSS</vulnerabilityName>
-  </suppress>
-
-  <suppress until="2020-10-01">
-    <notes><![CDATA[
-  This is only used for TESTING purposes.
-  ]]></notes>
-    <packageUrl regex="true">^pkg:javascript/handlebars@4\.0\.4.*$</packageUrl>
-    <vulnerabilityName>A prototype pollution vulnerability in handlebars is exploitable if an attacker can control the template</vulnerabilityName>
-    <vulnerabilityName>Disallow calling helperMissing and blockHelperMissing directly</vulnerabilityName>
-    <vulnerabilityName>Prototype pollution</vulnerabilityName>
-  </suppress>
-
+  <!--
+    Stale Boot 3 / WireMock 2 / frontend CVE suppressions (expired 2020-10-01) were
+    removed during the Spring Boot 4 migration. Add new suppressions only with
+    advisory evidence, affected GAV, reason, and a time-bounded until date.
+  -->
 </suppressions>
