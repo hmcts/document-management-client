@@ -7,9 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
+import org.wiremock.spring.ConfigureWireMock;
+import org.wiremock.spring.EnableWireMock;
 import uk.gov.hmcts.reform.document.config.HttpConfiguration;
 import uk.gov.hmcts.reform.document.domain.Classification;
 import uk.gov.hmcts.reform.document.domain.UploadResponse;
@@ -25,12 +26,12 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-@AutoConfigureWireMock(port = 0)
+@EnableWireMock({
+    @ConfigureWireMock(baseUrlProperties = "document_management.url")
+})
 @EnableAutoConfiguration
 @SpringBootTest(
-    classes = {DocumentManagementClientAutoConfiguration.class, HttpConfiguration.class},
-    properties = {"document_management.url=http://localhost:${wiremock.server.port}"},
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+    classes = {DocumentManagementClientAutoConfiguration.class, HttpConfiguration.class}
 )
 class DocumentUploadClientApiTest {
 
