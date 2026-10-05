@@ -183,7 +183,7 @@ dependencies {
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
   integrationTestImplementation group: 'org.wiremock.integrations', name: 'wiremock-spring-boot', version: '4.2.2'
-  integrationTestImplementation group: 'com.google.guava', name: 'guava', version: '33.7.1-jre'
+  integrationTestImplementation group: 'com.google.guava', name: 'guava', version: '33.7.2-jre'
 }
 
 dependencyManagement {
