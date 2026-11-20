@@ -154,7 +154,7 @@ publishing {
 
 
 ext {
-  springCloudVersion = '2025.1.4'
+  springCloudVersion = '2025.1.5'
 }
 
 dependencies {
